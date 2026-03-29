@@ -10,7 +10,7 @@ export function CTA() {
           <Link href="/explore" className="w-full sm:w-auto text-center bg-gradient-primary text-on-primary text-lg px-10 py-4 rounded-full font-bold shadow-lg hover:opacity-90 active:scale-95 transition-all">
             Find a Pro
           </Link>
-          <Link href="/signup" className="w-full sm:w-auto text-center bg-surface-container-highest text-primary text-lg px-10 py-4 rounded-full font-bold hover:bg-surface-container transition-all">
+          <Link href="/auth/sign-up" className="w-full sm:w-auto text-center bg-surface-container-highest text-primary text-lg px-10 py-4 rounded-full font-bold hover:bg-surface-container transition-all">
             Be a Pro
           </Link>
         </div>

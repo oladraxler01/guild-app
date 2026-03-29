@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { Suspense } from "react";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -37,7 +38,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#fef3ff] text-primary font-bold">Loading Guild...</div>}>
+            {children}
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>

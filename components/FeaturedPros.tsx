@@ -89,7 +89,7 @@ export function FeaturedPros() {
             <h4 className="text-2xl font-bold text-primary mb-2">Want to join the elite?</h4>
             <p className="text-on-surface-variant mb-6 max-w-md">We&#39;re always looking for top-tier talent in design, development, and business services. Get vetted today.</p>
             <div className="flex space-x-4">
-              <Link href="/signup" className="text-center block bg-gradient-primary text-on-primary px-8 py-3 rounded-full font-bold shadow-sm active:scale-95 transition-all">
+              <Link href="/auth/sign-up" className="text-center block bg-gradient-primary text-on-primary px-8 py-3 rounded-full font-bold shadow-sm active:scale-95 transition-all">
                 Apply as a Pro
               </Link>
               <Link href="#" className="text-primary font-bold px-6 py-3 hover:bg-white rounded-full transition-all">

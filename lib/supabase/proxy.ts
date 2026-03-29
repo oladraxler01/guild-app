@@ -44,20 +44,25 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: If you remove getClaims() and you use server-side rendering
   // with the Supabase client, your users may be randomly logged out.
-  const { data } = await supabase.auth.getClaims();
-  const user = data?.claims;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (
-    request.nextUrl.pathname !== "/" &&
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth")
-  ) {
-    // no user, potentially respond by redirecting the user to the login page
-    const url = request.nextUrl.clone();
-    url.pathname = "/auth/login";
-    return NextResponse.redirect(url);
-  }
+  // Update this block in lib/supabase/proxy.ts
+// 1. Create a list of pages that DON'T need a login
+const publicPages = ["/", "/be-a-pro", "/find-a-pro", "/how-it-works", "/auth/login", "/auth/sign-up", "/auth/confirm", "/post-job"];
+
+// 2. Update the check
+if (
+  !publicPages.includes(request.nextUrl.pathname) && // If the page is NOT in the public list
+  !request.nextUrl.pathname.startsWith("/find-a-pro/") && // and it's not a dynamic profile
+  !user &&                                           // and the user is NOT logged in
+  !request.nextUrl.pathname.startsWith("/auth")
+) {
+  const url = request.nextUrl.clone();
+  url.pathname = "/auth/login";
+  return NextResponse.redirect(url);
+}
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
   // If you're creating a new response object with NextResponse.next() make sure to:
