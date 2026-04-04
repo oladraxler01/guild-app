@@ -38,7 +38,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#fef3ff] text-primary font-bold">Loading Guild...</div>}>
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#fef3ff] text-primary font-bold text-xl tracking-tight">Guild is loading...</div>}>
             {children}
           </Suspense>
         </ThemeProvider>

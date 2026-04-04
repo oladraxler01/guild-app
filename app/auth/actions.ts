@@ -18,7 +18,15 @@ export async function signInAction(formData: FormData) {
     return redirect(`/auth/login?error=${encodeURIComponent(error.message)}`);
   }
 
-  return redirect("/");
+  // Role-based routing
+  const { data: { user } } = await supabase.auth.getUser();
+  const role = user?.user_metadata?.role;
+
+  if (role === "pro") {
+    return redirect("/dashboard");
+  } else {
+    return redirect("/client/dashboard");
+  }
 }
 
 export async function signUpAction(formData: FormData) {
@@ -36,11 +44,11 @@ export async function signUpAction(formData: FormData) {
     return redirect("/auth/sign-up?error=Email and password are required");
   }
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: `http://localhost:3000/auth/confirm`,
+      emailRedirectTo: `${origin}/auth/confirm`,
       data: {
         first_name: firstName,
         last_name: lastName,
@@ -57,7 +65,22 @@ export async function signUpAction(formData: FormData) {
     return redirect(`/auth/sign-up?error=${encodeURIComponent(error.message)}`);
   }
 
-  return redirect("/auth/sign-up-success");
+  // Force-insert profile row so Pros appear on search immediately
+  if (data?.user) {
+    const { error: profileError } = await supabase.from("profiles").insert({
+      id: data.user.id,
+      first_name: firstName,
+      last_name: lastName,
+      role: role,
+      nin: nin,
+    });
+
+    if (profileError) {
+      console.error("Profile insert error:", profileError.message);
+    }
+  }
+
+  return redirect("/auth/login?message=Account created successfully! Log in to continue.");
 }
 
 export async function signOutAction() {

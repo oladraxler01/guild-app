@@ -10,7 +10,7 @@ export function FeaturedPros() {
             <h2 className="text-3xl md:text-5xl font-extrabold text-on-surface mb-4">Top-rated Professionals</h2>
             <p className="text-on-surface-variant">Hand-picked experts with a proven track record of excellence.</p>
           </div>
-          <Link href="/explore" className="text-primary font-bold flex items-center space-x-2 group">
+          <Link href="/find-a-pro" className="text-primary font-bold flex items-center space-x-2 group">
             <span>View all professionals</span>
             <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
           </Link>
@@ -59,7 +59,7 @@ export function FeaturedPros() {
             <h3 className="text-xl font-bold text-on-surface">Marcus Chen</h3>
             <p className="text-on-surface-variant text-sm mb-4">Full-Stack Developer</p>
             <p className="text-on-surface-variant text-sm flex-1 leading-relaxed mb-6 italic">&quot;Expert in React, Node.js and scalable cloud architecture. Quick turnaround times.&quot;</p>
-            <Link href="/explore" className="w-full text-center block bg-surface-container-highest text-primary py-3 rounded-full font-bold hover:bg-primary hover:text-on-primary transition-all">
+            <Link href="/find-a-pro" className="w-full text-center block bg-surface-container-highest text-primary py-3 rounded-full font-bold hover:bg-primary hover:text-on-primary transition-all">
               View Profile
             </Link>
           </div>
@@ -79,7 +79,7 @@ export function FeaturedPros() {
             <h3 className="text-xl font-bold text-on-surface">Sarah Jenkins</h3>
             <p className="text-on-surface-variant text-sm mb-4">Digital Marketing Strategist</p>
             <p className="text-on-surface-variant text-sm flex-1 leading-relaxed mb-6 italic">&quot;SEO and Growth specialist. I help e-commerce brands double their organic traffic.&quot;</p>
-            <Link href="/explore" className="w-full text-center block bg-surface-container-highest text-primary py-3 rounded-full font-bold hover:bg-primary hover:text-on-primary transition-all">
+            <Link href="/find-a-pro" className="w-full text-center block bg-surface-container-highest text-primary py-3 rounded-full font-bold hover:bg-primary hover:text-on-primary transition-all">
               View Profile
             </Link>
           </div>
@@ -89,7 +89,7 @@ export function FeaturedPros() {
             <h4 className="text-2xl font-bold text-primary mb-2">Want to join the elite?</h4>
             <p className="text-on-surface-variant mb-6 max-w-md">We&#39;re always looking for top-tier talent in design, development, and business services. Get vetted today.</p>
             <div className="flex space-x-4">
-              <Link href="/auth/sign-up" className="text-center block bg-gradient-primary text-on-primary px-8 py-3 rounded-full font-bold shadow-sm active:scale-95 transition-all">
+              <Link href="/be-a-pro" className="text-center block bg-gradient-primary text-on-primary px-8 py-3 rounded-full font-bold shadow-sm active:scale-95 transition-all">
                 Apply as a Pro
               </Link>
               <Link href="#" className="text-primary font-bold px-6 py-3 hover:bg-white rounded-full transition-all">

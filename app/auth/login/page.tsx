@@ -8,6 +8,7 @@ import { signInAction } from "../actions";
 export default function LoginPage() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
+  const message = searchParams.get("message");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,6 +33,12 @@ export default function LoginPage() {
 
       {/* Login Card */}
       <main className="w-full max-w-md">
+        {message && (
+          <div className="bg-green-50 border border-green-300 text-green-800 p-4 rounded-lg mb-6 flex items-center gap-3">
+            <span className="material-symbols-outlined text-green-600">check_circle</span>
+            <p className="text-sm font-semibold">{message}</p>
+          </div>
+        )}
         <div className="bg-surface-container-lowest rounded-lg p-8 sm:p-10 shadow-sm">
           <form 
             action={async (formData) => {

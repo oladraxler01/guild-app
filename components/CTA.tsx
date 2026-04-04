@@ -7,10 +7,10 @@ export function CTA() {
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <h2 className="text-4xl md:text-6xl font-extrabold text-on-surface mb-8">Ready to get things done?</h2>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-          <Link href="/explore" className="w-full sm:w-auto text-center bg-gradient-primary text-on-primary text-lg px-10 py-4 rounded-full font-bold shadow-lg hover:opacity-90 active:scale-95 transition-all">
+          <Link href="/find-a-pro" className="w-full sm:w-auto text-center bg-gradient-primary text-on-primary text-lg px-10 py-4 rounded-full font-bold shadow-lg hover:opacity-90 active:scale-95 transition-all">
             Find a Pro
           </Link>
-          <Link href="/auth/sign-up" className="w-full sm:w-auto text-center bg-surface-container-highest text-primary text-lg px-10 py-4 rounded-full font-bold hover:bg-surface-container transition-all">
+          <Link href="/be-a-pro" className="w-full sm:w-auto text-center bg-surface-container-highest text-primary text-lg px-10 py-4 rounded-full font-bold hover:bg-surface-container transition-all">
             Be a Pro
           </Link>
         </div>

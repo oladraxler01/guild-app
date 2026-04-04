@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  cacheComponents: true,
   images: {
     remotePatterns: [
       {
@@ -9,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: 'lh3.googleusercontent.com',
       },
     ],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
   },
 };
 

@@ -1,208 +1,312 @@
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import { use } from "react";
+import { createClient } from "@/lib/supabase/server";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { HireAction } from "./components/HireAction";
+import { startInquiryChat } from "./actions";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export default function ProfilePage({ params }: PageProps) {
-  const { id } = use(params);
+export default async function PublicProfilePage({ params }: PageProps) {
+  const { id } = await params;
 
-  /* 
-     TODO: Fetch real data from Supabase 'profiles' table using the 'id'
-     const supabase = await createClient();
-     const { data: profile } = await supabase
-       .from('profiles')
-       .select('*')
-       .eq('id', id)
-       .single();
-  */
+  if (!id) {
+    notFound();
+  }
 
-  // Fallback data (Emeka Okafor)
-  const profile = {
-    name: "Emeka Okafor",
-    title: "Master Plumber & Systems Engineer",
-    location: "Garki, Abuja",
-    rating: "4.9/5",
-    hires: 82,
-    bio: "With over 15 years of experience serving the Abuja metropolis, I specialize in high-precision plumbing and industrial water systems. My approach combines traditional craftsmanship with modern diagnostic tools to ensure long-lasting solutions. I believe in transparent pricing and respect for your home environment.",
-    services: [
-      {
-        icon: "water_damage",
-        title: "Leak Repair",
-        description: "Precision detection and repair of concealed pipe leaks."
-      },
-      {
-        icon: "plumbing",
-        title: "Pipe Installation",
-        description: "Full copper and PEX piping for new builds and renovations."
-      },
-      {
-        icon: "hot_tub",
-        title: "Water Heaters",
-        description: "Maintenance and installation of solar and electric systems."
-      }
-    ]
-  };
+  const supabase = await createClient();
+
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error || !profile) {
+    return (
+      <div className="min-h-screen bg-[#fef3ff] flex flex-col items-center justify-center text-[#3a264b] font-['Plus_Jakarta_Sans']">
+        <div className="text-center">
+          <span className="material-symbols-outlined text-6xl text-on-surface-variant mb-4 font-light">
+            person_off
+          </span>
+          <h1 className="text-3xl font-extrabold mb-2">Profile Not Found</h1>
+          <p className="text-on-surface-variant mb-6">
+            We couldn't find the professional you're looking for.
+          </p>
+          <Link href="/" className="text-primary font-bold hover:underline">
+            &larr; Back to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const fullName =
+    [profile.first_name, profile.last_name].filter(Boolean).join(" ") || "Professional";
+  const firstName = profile.first_name || "Professional";
+
+  // Parse arrays
+  const servicesArray = Array.isArray(profile.services)
+    ? profile.services
+    : typeof profile.services === "string"
+      ? profile.services.split(",").map((s: string) => s.trim())
+      : [];
+
+  const portfolioArray = Array.isArray(profile.portfolio_urls) ? profile.portfolio_urls : [];
 
   return (
-    <div className="bg-surface text-on-surface antialiased flex flex-col min-h-screen">
-      <Navbar />
+    <div className="min-h-screen bg-[#fef3ff] text-[#3a264b] font-['Plus_Jakarta_Sans'] pb-24">
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        .glass-nav {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+        }
+        .tonal-gradient {
+            background: linear-gradient(135deg, #702ae1 0%, #b28cff 100%);
+        }
+        .pro-card-gradient { background: linear-gradient(135deg, #ffffff 0%, #faecff 100%); }
+      `,
+        }}
+      />
+      {/* Top Navigation Bar */}
+      <nav className="fixed top-0 w-full z-50 glass-nav shadow-sm bg-white/70">
+        <div className="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+          <div className="text-2xl font-extrabold text-purple-700 tracking-tighter">
+            <Link href="/">
+              <span style={{ color: "rgb(58, 38, 75)", letterSpacing: "-0.6px" }}>ConnectFlow</span>
+            </Link>
+          </div>
+          <div className="hidden md:flex items-center gap-8">
+            <Link
+              href="/find-a-pro"
+              className="text-purple-700 font-bold border-b-2 border-purple-600 pb-1 text-sm tracking-wide"
+            >
+              Find Services
+            </Link>
+            <Link
+              href="/be-a-pro"
+              className="text-slate-500 hover:text-purple-500 transition-colors text-sm tracking-wide"
+            >
+              Be a Provider
+            </Link>
+            <Link
+              href="/how-it-works"
+              className="text-slate-500 hover:text-purple-500 transition-colors text-sm tracking-wide"
+            >
+              How it Works
+            </Link>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/auth/login"
+              className="text-sm font-bold text-purple-700 hover:text-purple-900 transition-colors"
+            >
+              Log In
+            </Link>
+          </div>
+        </div>
+      </nav>
 
-      <main className="pt-32 pb-20 px-6 max-w-7xl mx-auto flex-grow">
-        {/* Profile Header Section */}
-        <section className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-16 items-start">
-          {/* Profile Image & Quick Info */}
-          <div className="md:col-span-5 lg:col-span-4">
-            <div className="relative group">
-              <div className="aspect-square rounded-lg overflow-hidden bg-surface-container-low">
-                <img 
-                  alt={profile.name} 
-                  className="w-full h-full object-cover" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-qQ-gatGMUDMD8vkTCr1udMC28D-GWKEZ3GoEBs-GCJBR4wXvcOniFiS6IPiLk6Kua5HCHsPK0bpb1KKI2psLUR_1vTXjIN1oAQaHtBbNZpjW9IWE7QzxzxcYzoSwL6J57OBWrRJCB9zmaHmfocFdJfpr3hFfXJ5biKwkf58nT3PSDoe4PrB_F6bthgEJI8GeAif95SBM80Ze4hI9f773oWdJyCWMFD0gNg-IX712YnFhZrvhYoEathKLx-jmLRNjfplPfqybhBg" 
-                />
-              </div>
-              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
-                <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: '"FILL" 1' }}>verified</span>
-                <span className="text-xs font-bold text-on-surface uppercase tracking-wider">Verified</span>
-              </div>
+      {/* Main Content Layout */}
+      <main className="pt-28 px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
+        {/* Left Sidebar */}
+        <aside className="lg:col-span-4 flex flex-col gap-4">
+          <div className="bg-white rounded-[2rem] p-4 shadow-sm w-full relative">
+            <div className="absolute top-8 right-8 bg-white px-3 py-1.5 rounded-full text-[10px] font-extrabold tracking-wider text-on-surface shadow-sm flex items-center gap-1 z-10 uppercase">
+              <span className="material-symbols-outlined text-primary text-xs" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
+              Verified
             </div>
-            <div className="mt-8 flex flex-col gap-4">
-              <button className="w-full py-4 bg-gradient-primary text-on-primary rounded-full font-bold text-lg shadow-lg shadow-primary/20 flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all">
-                <span className="material-symbols-outlined">calendar_today</span>
-                Hire Now
-              </button>
-              <button className="w-full py-4 bg-surface-container-highest text-primary rounded-full font-bold text-lg flex items-center justify-center gap-2 hover:bg-surface-container-high transition-all">
-                <span className="material-symbols-outlined">mail</span>
-                Message
-              </button>
+            <div className="w-full aspect-square rounded-[1.5rem] bg-surface-container-high overflow-hidden mb-6 flex items-center justify-center relative">
+              {profile.avatar_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={profile.avatar_url}
+                  alt={fullName}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-6xl font-extrabold text-primary">{fullName.charAt(0)}</span>
+              )}
+            </div>
+            
+            <div className="flex flex-col gap-3">
+              <HireAction proId={profile.id} />
+              <form action={startInquiryChat.bind(null, profile.id) as any} className="w-full">
+                <button type="submit" className="w-full py-4 rounded-full bg-surface-container-low text-primary font-bold text-sm hover:bg-surface-container transition-all active:scale-95 flex items-center justify-center gap-2">
+                  <span className="material-symbols-outlined text-[18px]">mail</span>
+                  Message
+                </button>
+              </form>
             </div>
           </div>
+        </aside>
 
-          {/* Profile Details */}
-          <div className="md:col-span-7 lg:col-span-8 flex flex-col gap-8">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-extrabold text-on-surface mb-2 tracking-tight">{profile.name}</h1>
-              <p className="text-xl text-primary font-semibold mb-4">{profile.title}</p>
-              <div className="flex flex-wrap items-center gap-6">
-                <div className="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-full">
-                  <span className="material-symbols-outlined text-on-surface-variant">location_on</span>
-                  <span className="text-on-surface font-medium">{profile.location}</span>
-                </div>
-                <div className="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-full">
-                  <span className="material-symbols-outlined text-amber-500" style={{ fontVariationSettings: '"FILL" 1' }}>star</span>
-                  <span className="text-on-surface font-bold">{profile.rating}</span>
-                  <span className="text-on-surface-variant text-sm">({profile.hires} hires)</span>
-                </div>
+        {/* Right Main Content */}
+        <div className="lg:col-span-8 flex flex-col gap-10">
+          
+          {/* Header Info */}
+          <header>
+            <h1 className="text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight mb-2">
+              {fullName}
+            </h1>
+            <h2 className="text-primary font-bold text-lg mb-6">
+              Guild Professional Provider
+            </h2>
+            
+            <div className="flex items-center gap-4 flex-wrap">
+              <div className="flex items-center gap-2 px-4 py-2 bg-surface-container-low rounded-full text-sm font-semibold text-on-surface-variant">
+                <span className="material-symbols-outlined text-[18px]">location_on</span>
+                {profile.location || "Abuja, FCT"}
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 bg-surface-container-low rounded-full text-sm font-semibold text-on-surface-variant">
+                <span className="material-symbols-outlined text-[18px] text-[#FFA800]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                <span className="text-on-surface">4.9/5</span>
+                <span className="opacity-60 font-medium">(82 hires)</span>
               </div>
             </div>
+          </header>
 
-            {/* Bio */}
-            <div className="bg-surface-container-low p-8 rounded-lg border border-outline-variant/10">
-              <h2 className="text-xl font-bold text-on-surface mb-4">About {profile.name.split(' ')[0]}</h2>
-              <p className="text-on-surface-variant leading-relaxed text-lg">
-                {profile.bio}
-              </p>
-            </div>
+          {/* About Section */}
+          <section className="bg-surface-container-low p-8 rounded-[2rem]">
+            <h3 className="text-xl font-bold text-on-surface mb-4">About {firstName}</h3>
+            <p className="text-on-surface-variant leading-relaxed">
+              {profile.bio || "This professional hasn't provided a full bio yet. Contact them to learn more about their capabilities and experience."}
+            </p>
+          </section>
 
-            {/* Services Bento Grid */}
-            <div>
-              <h2 className="text-xl font-bold text-on-surface mb-6">Specialized Services</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {profile.services.map((service, index) => (
-                  <div key={index} className="bg-white p-6 rounded-lg border border-outline-variant/10 shadow-sm flex flex-col gap-3">
-                    <span className="material-symbols-outlined text-primary text-3xl">{service.icon}</span>
-                    <h3 className="font-bold text-on-surface">{service.title}</h3>
-                    <p className="text-sm text-on-surface-variant">{service.description}</p>
+          {/* Specialized Services */}
+          {servicesArray.length > 0 && (
+            <section>
+              <h3 className="text-xl font-bold text-on-surface mb-6">Specialized Services</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {servicesArray.map((service: string, index: number) => {
+                  const icons = ["home_repair_service", "plumbing", "electrical_services", "cleaning_services", "construction", "handyman"];
+                  const icon = icons[index % icons.length];
+                  
+                  return (
+                    <div key={index} className="bg-white p-6 rounded-[1.5rem] shadow-sm border border-outline-variant/20 flex flex-col items-start gap-4">
+                      <div className="text-primary">
+                        <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: "'FILL' 1" }}>{icon}</span>
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-on-surface text-sm mb-2 leading-tight">{service}</h4>
+                        <p className="text-xs text-on-surface-variant opacity-80 leading-relaxed">Professional {service.toLowerCase()} available upon request.</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* Recent Projects */}
+          <section>
+            <h3 className="text-xl font-bold text-on-surface mb-6">Recent Projects</h3>
+            {portfolioArray.length > 0 ? (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {portfolioArray.slice(0, 3).map((imgUrl: string, idx: number) => (
+                  <div key={idx} className="aspect-square rounded-[1.5rem] bg-surface-container-low overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={imgUrl} alt="Project" className="w-full h-full object-cover" />
                   </div>
                 ))}
+                
+                {/* Last item or More placeholder */}
+                {portfolioArray.length > 3 ? (
+                  <div className="aspect-square rounded-[1.5rem] bg-surface-container-low flex flex-col items-center justify-center text-on-surface-variant border-2 border-dashed border-outline-variant/30 cursor-pointer hover:bg-surface-container transition-colors">
+                    <span className="font-bold text-sm">+{portfolioArray.length - 3} more</span>
+                    <span className="text-xs opacity-70">project photos</span>
+                  </div>
+                ) : (
+                  <div className="aspect-square rounded-[1.5rem] bg-surface-container-low/50 flex flex-col items-center justify-center text-on-surface-variant border-2 border-dashed border-outline-variant/20">
+                    <span className="material-symbols-outlined opacity-50 mb-1">add_photo_alternate</span>
+                  </div>
+                )}
               </div>
-            </div>
-          </div>
-        </section>
+            ) : (
+                <div className="bg-surface-container-low/50 p-8 rounded-[1.5rem] text-center border border-dashed border-outline-variant/30">
+                  <span className="material-symbols-outlined text-4xl text-on-surface-variant opacity-50 mb-2">imagesmode</span>
+                  <p className="text-on-surface-variant text-sm font-medium">No recent projects uploaded yet.</p>
+                </div>
+            )}
+          </section>
 
-        {/* Gallery Section */}
-        <section className="mb-20">
-          <h2 className="text-2xl font-bold text-on-surface mb-8">Recent Projects</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="aspect-square rounded-lg overflow-hidden bg-surface-container-low group cursor-pointer">
-              <img 
-                alt="Modern Bathroom" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHsy5u3cynilcwDf_ZD0KNgNFXpZFf9F7zYL1f1QMBKI1GmYUhbnP10IdPpQGsq2XejcQi564geIWLZnc5-8xtmrzvMKVBLrnUz9YK7mTPbIlDTMtVD4RefYdLw6NttSDIQtKG4Lrm8LjauwVtUg8YVo7GKI7zqTZvF7I4_1B8dZQzPb3CpzFAUy4WBDuDU0gFbttyr5wzmIDKNf4MLpyOeMwivXnaMhbGdiFFmWocBxdPNKhSsxZOfHi_rSfbMRogX3qFycGTvok" 
-              />
+          {/* Client Reviews */}
+          <section className="mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-on-surface">Client Reviews</h3>
+              <button className="text-sm font-bold text-primary hover:text-primary-dim flex items-center gap-1 transition-colors">
+                View All Reviews <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+              </button>
             </div>
-            <div className="aspect-square rounded-lg overflow-hidden bg-surface-container-low group cursor-pointer">
-              <img 
-                alt="Piping System" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgnxvPZNLJFcoPw6b6WYzo-VjElwVrEf2-ofQmYAoUGqaNnTzVGWlChLkBhidqipSdQu6oI8RDboZVLPqTdafMkPuOOgZ1GQgkcONvKMqcr6G_9c2Q0dk5OZq8S9mqkj8_rhOMFfRcScv2pZ_RQud-Inopp8QN7pL3vNt7ZlZVuKSrNCUZMuw_DDSvGLrMij4KAA38LQW7aSN0i0O1yEhM7FRnE6WW95HO7CBu0Moz6HwczajqoP3aX5PN9W5Fx-_lpwyDLKfoEnA" 
-              />
-            </div>
-            <div className="aspect-square rounded-lg overflow-hidden bg-surface-container-low group cursor-pointer">
-              <img 
-                alt="Kitchen Fixture" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZ8PL9UbZrrNcSXGSdDGE1FEJhiwPZV93uNsmjgl7bBmmnWmQ-EQM7OQWGDLVjZI3qhR_5PPwBpMHRbrnjrO-fLLNZUk85mj9HFjs6la78xlyy4m1tTYF3frTRDaM79h4uWhE81Kx685Zewsv_XLYJRDmU5VRDFOnQSQ2UDuC0wMEZPWKQNhEr7eLwaj5y4jjMnlvf9pDBE-3lvWcwWFwN5KHauBW-fkae5xynQXwfrmESJudL_fDnukqGZGeET7gO4SrzmEd6WgM" 
-              />
-            </div>
-            <div className="aspect-square rounded-lg overflow-hidden bg-surface-container-low flex items-center justify-center p-6 text-center border-2 border-dashed border-outline-variant/30 hover:bg-surface-container-high transition-colors cursor-pointer">
-              <p className="text-on-surface-variant font-medium">+14 more project photos</p>
-            </div>
-          </div>
-        </section>
+            
+            <p className="text-sm text-on-surface-variant mb-6 font-medium">What it's like to work with {firstName}</p>
 
-        {/* Reviews Section */}
-        <section>
-          <div className="flex justify-between items-end mb-10">
-            <div>
-              <h2 className="text-2xl font-bold text-on-surface mb-2">Client Reviews</h2>
-              <p className="text-on-surface-variant">What it&apos;s like to work with {profile.name.split(' ')[0]}</p>
-            </div>
-            <button className="text-primary font-bold hover:underline flex items-center gap-1 group">
-              View All Reviews 
-              <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-            </button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-surface-container-lowest p-8 rounded-lg border border-outline-variant/5 shadow-sm">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center font-bold text-on-secondary-container">AM</div>
-                <div>
-                  <p className="font-bold text-on-surface">Amina Mohammed</p>
-                  <div className="flex text-amber-500 text-sm">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <span key={s} className="material-symbols-outlined" style={{ fontVariationSettings: '"FILL" 1' }}>star</span>
-                    ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Fake Review 1 */}
+              <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-outline-variant/20">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container font-bold flex items-center justify-center text-sm">
+                    AM
+                  </div>
+                  <div>
+                    <h5 className="font-bold text-on-surface text-sm">Amina Mohammed</h5>
+                    <div className="flex text-[#FFA800]">
+                       {[...Array(5)].map((_, i) => (
+                         <span key={i} className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                       ))}
+                    </div>
                   </div>
                 </div>
+                <p className="text-on-surface-variant italic text-sm leading-relaxed">
+                  "Extraordinary service from start to finish. He arrived absolutely on time, diagnosed the issue quickly, and left the workspace perfectly clean. Highly recommend!"
+                </p>
               </div>
-              <p className="text-on-surface-variant italic leading-relaxed">
-                &quot;Emeka fixed a major leak that two other plumbers couldn&apos;t find. He was punctual, clean, and extremely professional. Highly recommended for any complex issues!&quot;
-              </p>
-            </div>
-            <div className="bg-surface-container-lowest p-8 rounded-lg border border-outline-variant/5 shadow-sm">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-tertiary-container flex items-center justify-center font-bold text-on-tertiary-container">CO</div>
-                <div>
-                  <p className="font-bold text-on-surface">Chidi Okoro</p>
-                  <div className="flex text-amber-500 text-sm">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <span key={s} className="material-symbols-outlined" style={{ fontVariationSettings: '"FILL" 1' }}>star</span>
-                    ))}
+
+              {/* Fake Review 2 */}
+              <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-outline-variant/20">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-tertiary-container text-on-tertiary-container font-bold flex items-center justify-center text-sm">
+                    CO
+                  </div>
+                  <div>
+                    <h5 className="font-bold text-on-surface text-sm">Chidi Okoro</h5>
+                    <div className="flex text-[#FFA800]">
+                       {[...Array(5)].map((_, i) => (
+                         <span key={i} className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                       ))}
+                    </div>
                   </div>
                 </div>
+                <p className="text-on-surface-variant italic text-sm leading-relaxed">
+                  "Professional and transparent with pricing. Explained everything clearly before proceeding with the work. A rare find in this city."
+                </p>
               </div>
-              <p className="text-on-surface-variant italic leading-relaxed">
-                &quot;Professional service from start to finish. He explained everything clearly and the final bill was exactly what he quoted. A rare find in this city.&quot;
-              </p>
             </div>
-          </div>
-        </section>
+          </section>
+
+        </div>
       </main>
 
-      <Footer />
+       {/* Footer */}
+       <footer className="w-full mt-12 py-8 px-6 border-t border-slate-100 bg-white">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-lg font-bold text-on-surface mb-2 tracking-tight">ConnectFlow</div>
+          <div className="flex flex-wrap items-center justify-center gap-8">
+            <span className="text-xs font-semibold text-slate-400 hover:text-primary cursor-pointer transition-colors">Privacy Policy</span>
+            <span className="text-xs font-semibold text-slate-400 hover:text-primary cursor-pointer transition-colors">Terms of Service</span>
+            <span className="text-xs font-semibold text-slate-400 hover:text-primary cursor-pointer transition-colors">Help Center</span>
+            <span className="text-xs font-semibold text-slate-400 hover:text-primary cursor-pointer transition-colors">Contact Us</span>
+          </div>
+          <p className="text-xs font-medium text-slate-400">
+            © 2024 ConnectFlow. Human-centric connections.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
