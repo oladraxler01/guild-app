@@ -79,7 +79,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         />
 
         {/* Main Canvas */}
-        <main className="flex-1 md:ml-64 p-4 md:p-10 w-full">
+        <main className="flex-1 md:ml-64 p-4 md:p-10 w-full pb-24 md:pb-10">
           {children}
         </main>
       </div>
@@ -100,22 +100,22 @@ export default async function DashboardLayout({ children }: { children: React.Re
       </footer>
 
       {/* Mobile Bottom Nav */}
-      <div className="md:hidden fixed bottom-0 w-full bg-white/70 backdrop-blur-lg border-t border-slate-100 px-6 py-4 flex justify-between items-center z-50">
-        <Link href="/dashboard" className="flex flex-col items-center gap-1 text-purple-700">
-          <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>dashboard</span>
+      <div className="md:hidden fixed bottom-0 w-full bg-white/70 backdrop-blur-lg border-t border-slate-100 px-4 py-3 flex justify-around items-center z-50">
+        <Link href="/dashboard" className="flex flex-col items-center gap-0.5 text-purple-700">
+          <span className="material-symbols-outlined text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>dashboard</span>
           <span className="text-[10px] font-bold">Dashboard</span>
         </Link>
-        <Link href="/dashboard/profile" className="flex flex-col items-center gap-1 text-slate-400">
-          <span className="material-symbols-outlined">person</span>
+        <Link href="/dashboard/profile" className="flex flex-col items-center gap-0.5 text-slate-400">
+          <span className="material-symbols-outlined text-xl">person</span>
           <span className="text-[10px] font-bold">Profile</span>
         </Link>
-        <Link href="/find-a-pro" className="flex flex-col items-center gap-1 text-slate-400">
-          <span className="material-symbols-outlined">search</span>
-          <span className="text-[10px] font-bold">Explore</span>
+        <Link href="/dashboard/settings" className="flex flex-col items-center gap-0.5 text-slate-400">
+          <span className="material-symbols-outlined text-xl">settings</span>
+          <span className="text-[10px] font-bold">Settings</span>
         </Link>
         <form action={signOutAction as any}>
-          <button type="submit" className="flex flex-col items-center gap-1 text-slate-400">
-            <span className="material-symbols-outlined">logout</span>
+          <button type="submit" className="flex flex-col items-center gap-0.5 text-slate-400">
+            <span className="material-symbols-outlined text-xl">logout</span>
             <span className="text-[10px] font-bold">Log Out</span>
           </button>
         </form>

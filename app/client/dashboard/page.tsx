@@ -56,6 +56,9 @@ export default async function ClientDashboard() {
             <button className="p-2 text-[#702ae1] hover:bg-[#edd3ff]/50 rounded-full transition-colors">
               <span className="material-symbols-outlined">notifications</span>
             </button>
+            <Link href="/client/settings" className="p-2 text-[#702ae1] hover:bg-[#edd3ff]/50 rounded-full transition-colors">
+              <span className="material-symbols-outlined">settings</span>
+            </Link>
             <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container bg-surface-container-high flex items-center justify-center">
               {profile?.avatar_url ? (
                 <img alt="Profile" className="w-full h-full object-cover" src={profile.avatar_url} />
@@ -73,7 +76,7 @@ export default async function ClientDashboard() {
         </div>
       </header>
 
-      <main className="pt-28 pb-16 px-6 max-w-6xl mx-auto">
+      <main className="pt-28 pb-24 md:pb-16 px-6 max-w-6xl mx-auto">
 
         {/* Welcome Header */}
         <div className="mb-10">
@@ -251,8 +254,7 @@ export default async function ClientDashboard() {
         </div>
       </footer>
 
-      {/* Mobile Bottom Nav */}
-      <div className="md:hidden fixed bottom-0 w-full bg-white/80 backdrop-blur-lg border-t border-[#edd3ff] px-6 py-3 flex justify-around items-center z-50">
+      <div className="md:hidden fixed bottom-0 w-full bg-white/80 backdrop-blur-lg border-t border-[#edd3ff] px-4 py-3 flex justify-around items-center z-50">
         <Link href="/client/dashboard" className="flex flex-col items-center gap-0.5 text-[#702ae1]">
           <span className="material-symbols-outlined text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>work</span>
           <span className="text-[10px] font-bold">Jobs</span>
@@ -265,12 +267,10 @@ export default async function ClientDashboard() {
           <span className="material-symbols-outlined text-xl">add_circle</span>
           <span className="text-[10px] font-bold">Post Job</span>
         </Link>
-        <form action={signOutAction as any}>
-          <button type="submit" className="flex flex-col items-center gap-0.5 text-[#69537b]">
-            <span className="material-symbols-outlined text-xl">logout</span>
-            <span className="text-[10px] font-bold">Log Out</span>
-          </button>
-        </form>
+        <Link href="/client/settings" className="flex flex-col items-center gap-0.5 text-[#69537b]">
+          <span className="material-symbols-outlined text-xl">settings</span>
+          <span className="text-[10px] font-bold">Settings</span>
+        </Link>
       </div>
     </div>
   );

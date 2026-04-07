@@ -57,7 +57,7 @@ export default async function ClientSettingsPage() {
         </div>
       </header>
 
-      <main className="pt-28 pb-16 px-6 max-w-3xl mx-auto space-y-8">
+      <main className="pt-28 pb-24 md:pb-16 px-6 max-w-3xl mx-auto space-y-8">
 
         {/* Page Header */}
         <div className="flex items-center justify-between">
@@ -188,6 +188,22 @@ export default async function ClientSettingsPage() {
           </div>
         </div>
       </footer>
+
+      {/* Mobile Bottom Nav */}
+      <div className="md:hidden fixed bottom-0 w-full bg-white/80 backdrop-blur-lg border-t border-[#edd3ff] px-4 py-3 flex justify-around items-center z-50">
+        <Link href="/client/dashboard" className="flex flex-col items-center gap-0.5 text-[#69537b]">
+          <span className="material-symbols-outlined text-xl">work</span>
+          <span className="text-[10px] font-bold">Jobs</span>
+        </Link>
+        <Link href="/find-a-pro" className="flex flex-col items-center gap-0.5 text-[#69537b]">
+          <span className="material-symbols-outlined text-xl">search</span>
+          <span className="text-[10px] font-bold">Find Pro</span>
+        </Link>
+        <Link href="/client/settings" className="flex flex-col items-center gap-0.5 text-[#702ae1]">
+          <span className="material-symbols-outlined text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>settings</span>
+          <span className="text-[10px] font-bold">Settings</span>
+        </Link>
+      </div>
     </div>
   );
 }
