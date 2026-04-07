@@ -8,21 +8,25 @@ import Image from "next/image";
 
 import { BidForm } from "./BidForm";
 
+export const dynamic = "force-dynamic";
+
 export default async function JobDetailsPage({
   params,
 }: {
-  params: { jobId: string };
+  params: Promise<{ jobId: string }>;
 }) {
+  const { jobId } = await params;
   const supabase = await createClient();
 
   // 1. Fetch Job
   const { data: job, error: jobError } = await supabase
     .from("job_requests")
     .select("*")
-    .eq("id", params.jobId)
+    .eq("id", jobId)
     .single();
 
   if (jobError || !job) {
+    console.error("Job Fetch Error:", jobError);
     notFound();
   }
 
@@ -40,7 +44,7 @@ export default async function JobDetailsPage({
       *,
       pro:profiles!pro_id (id, first_name, last_name, avatar_url)
     `)
-    .eq("job_id", params.jobId)
+    .eq("job_id", jobId)
     .order("created_at", { ascending: false });
 
   const timeAgo = formatDistanceToNow(new Date(job.created_at), { addSuffix: true });
@@ -132,7 +136,7 @@ export default async function JobDetailsPage({
 
           {/* Right Column: Bidding Sidebar */}
           <div className="lg:col-span-4 space-y-8">
-            <BidForm jobId={params.jobId} />
+            <BidForm jobId={jobId} />
 
             {/* Other Bids List */}
             <section className="space-y-6">
