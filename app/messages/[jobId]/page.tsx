@@ -24,10 +24,7 @@ export default async function ChatPage({ params }: PageProps) {
   // 1. Fetch Job Request
   const { data: rawJob, error: jobError } = await supabase
     .from("job_requests")
-    .select(`
-      *,
-      pro:profiles!pro_id (first_name, last_name, avatar_url)
-    `)
+    .select("*")
     .eq("id", jobId)
     .single();
 
@@ -43,9 +40,17 @@ export default async function ChatPage({ params }: PageProps) {
     .eq("id", rawJob.client_id)
     .single();
 
+  // Fetch the Pro profile separately for the same reason
+  const { data: proProfile } = await supabase
+    .from("profiles")
+    .select("first_name, last_name, avatar_url")
+    .eq("id", rawJob.pro_id)
+    .single();
+
   const job = {
     ...rawJob,
     client: clientProfile || null,
+    pro: proProfile || null,
   };
 
   // Authorize User (Must be client or pro)
