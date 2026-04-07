@@ -1,0 +1,2 @@
+app/post-job/page.tsx(1,8): error TS2613: Module '"C:/Users/USER/Desktop/GUILD/guild-app/components/Navbar"' has no default export. Did you mean to use 'import { Navbar } from "C:/Users/USER/Desktop/GUILD/guild-app/components/Navbar"' instead?
+app/post-job/page.tsx(2,8): error TS2613: Module '"C:/Users/USER/Desktop/GUILD/guild-app/components/Footer"' has no default export. Did you mean to use 'import { Footer } from "C:/Users/USER/Desktop/GUILD/guild-app/components/Footer"' instead?
