@@ -35,6 +35,12 @@ export function Navbar() {
           >
             How it Works
           </Link>
+          <Link 
+            className={`${pathname === "/browse-jobs" ? "text-purple-700 font-bold border-b-2 border-purple-600" : "text-[#69537b] hover:text-[#702ae1] font-medium"} text-sm transition-all duration-300`} 
+            href="/browse-jobs"
+          >
+            Browse Jobs
+          </Link>
         </div>
 
         {/* Actions */}
@@ -83,6 +89,13 @@ export function Navbar() {
             onClick={() => setIsMobileMenuOpen(false)}
           >
             How it Works
+          </Link>
+          <Link 
+            className={`${pathname === "/browse-jobs" ? "text-purple-700 font-bold" : "text-[#69537b] hover:text-[#702ae1] font-medium"} text-base p-2`} 
+            href="/browse-jobs"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Browse Jobs
           </Link>
           <div className="border-t border-gray-100 pt-4 flex flex-col space-y-3">
             <Link 
