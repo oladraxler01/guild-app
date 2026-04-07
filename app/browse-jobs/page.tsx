@@ -100,11 +100,11 @@ export default async function BrowseJobsPage() {
                           <div>
                             <p className="text-sm font-bold text-white leading-tight">{client?.first_name || "Premium"} {client?.last_name || "Client"}</p>
                             <p className="text-xs text-white/80 flex items-center gap-1">
-                              <span className="material-symbols-outlined text-[14px]">location_on</span> Remote
+                              <span className="material-symbols-outlined text-[14px]">location_on</span> {job.location_type || 'Remote'}
                             </p>
                           </div>
                         </div>
-                        <span className="bg-white/20 text-white text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full backdrop-blur-md">Featured</span>
+                        <span className="bg-white/20 text-white text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full backdrop-blur-md">{job.category || 'Featured'}</span>
                       </div>
                       <h3 className="text-xl font-bold text-white mb-3 leading-tight">{job.title}</h3>
                       <p className="text-white/90 text-sm leading-relaxed mb-6 line-clamp-2">
@@ -116,11 +116,11 @@ export default async function BrowseJobsPage() {
                         <p className="text-xs text-white/80 font-medium">Budget</p>
                         <p className="text-xl font-extrabold text-white">${job.budget}</p>
                       </div>
-                      <Link href="/auth/login">
-                        <button className="bg-white text-[#702ae1] px-5 py-2.5 rounded-full font-bold text-sm hover:bg-opacity-90 transition-all shadow-sm">
-                          View & Bid
-                        </button>
-                      </Link>
+                       <Link href={`/jobs/${job.id}`}>
+                         <button className="bg-white text-[#702ae1] px-5 py-2.5 rounded-full font-bold text-sm hover:bg-opacity-90 transition-all shadow-sm">
+                           View & Bid
+                         </button>
+                       </Link>
                     </div>
                   </div>
                 );
@@ -141,11 +141,11 @@ export default async function BrowseJobsPage() {
                         <div>
                           <p className="text-sm font-bold text-[#3a264b] leading-tight">{client?.first_name || "Client"} {client?.last_name || ""}</p>
                           <p className="text-xs text-[#69537b] flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[14px]">location_on</span> Online
+                            <span className="material-symbols-outlined text-[14px]">location_on</span> {job.location_type || 'Online'}
                           </p>
                         </div>
                       </div>
-                      <span className="bg-[#e6c5ff] text-[#612c90] text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full">New</span>
+                      <span className="bg-[#e6c5ff] text-[#612c90] text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full">{job.category || 'New'}</span>
                     </div>
                     <h3 className="text-xl font-bold text-[#3a264b] mb-3 group-hover:text-[#702ae1] transition-colors leading-tight">{job.title}</h3>
                     <p className="text-[#69537b] text-sm leading-relaxed mb-6 line-clamp-2">
@@ -157,11 +157,11 @@ export default async function BrowseJobsPage() {
                       <p className="text-xs text-[#69537b] font-medium">Budget</p>
                       <p className="text-xl font-extrabold text-[#702ae1]">${job.budget || "Open"}</p>
                     </div>
-                    <Link href="/auth/login">
-                      <button className="bg-[#edd3ff]/50 text-[#702ae1] px-5 py-2.5 rounded-full font-bold text-sm hover:bg-[#702ae1] hover:text-white transition-all shadow-sm">
-                        View & Bid
-                      </button>
-                    </Link>
+                     <Link href={`/jobs/${job.id}`}>
+                       <button className="bg-[#edd3ff]/50 text-[#702ae1] px-5 py-2.5 rounded-full font-bold text-sm hover:bg-[#702ae1] hover:text-white transition-all shadow-sm">
+                         View & Bid
+                       </button>
+                     </Link>
                   </div>
                 </div>
               );
