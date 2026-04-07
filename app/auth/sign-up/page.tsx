@@ -41,7 +41,7 @@ export default function SignUpPage() {
               Start your <span className="text-primary italic">human-centric</span> journey.
             </h1>
             <p className="text-on-surface-variant text-lg leading-relaxed max-w-md">
-              Connect with verified service providers in a marketplace built on trust, transparency, and elegant simplicity.
+              Discover verified service providers in a marketplace built on trust, transparency, and elegant simplicity.
             </p>
             <div className="flex items-center gap-4 pt-4">
               <div className="flex -space-x-3">
@@ -174,7 +174,7 @@ export default function SignUpPage() {
         <div className="flex flex-col md:flex-row justify-between items-center px-8 py-12 gap-6 max-w-7xl mx-auto">
           <div className="flex flex-col items-center md:items-start gap-2">
             <span className="text-lg font-bold text-[#3a264b]">Guild</span>
-            <p className="text-sm text-[#69537b] font-medium">© 2024 TrustMarket. Human-centric service exchange.</p>
+            <p className="text-sm text-[#69537b] font-medium">© 2024 Guild. Human-centric service exchange.</p>
           </div>
           <div className="flex flex-wrap justify-center gap-6">
             <Link className="text-sm text-[#69537b] font-semibold hover:text-[#702ae1] transition-all" href="#">Privacy Policy</Link>

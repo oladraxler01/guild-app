@@ -12,7 +12,7 @@ export default function PostJobPage() {
         <div className="max-w-4xl mx-auto">
           <header className="text-center mb-16">
             <h1 className="text-5xl md:text-6xl font-extrabold text-on-surface tracking-tight mb-4">Let&apos;s get started.</h1>
-            <p className="text-on-surface-variant text-lg md:text-xl max-w-lg mx-auto">Choose how you want to use Connect today. Simple, fast, and friendly.</p>
+            <p className="text-on-surface-variant text-lg md:text-xl max-w-lg mx-auto">Choose how you want to use Guild today. Simple, fast, and friendly.</p>
           </header>
 
           <div className="grid md:grid-cols-2 gap-8 items-start">
@@ -49,7 +49,7 @@ export default function PostJobPage() {
                 </div>
               </div>
               <Link href="/auth/sign-up?role=pro" className="w-full py-5 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold text-lg shadow-xl shadow-primary/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-                Join Connect
+                Join Guild
                 <span className="material-symbols-outlined">arrow_forward</span>
               </Link>
             </section>

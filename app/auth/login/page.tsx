@@ -27,8 +27,8 @@ export default function LoginPage() {
         <Link href="/" className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-surface-container-highest mb-6 hover:scale-105 transition-transform">
           <span className="material-symbols-outlined text-primary text-4xl">lock_open</span>
         </Link>
-        <h1 className="text-4xl font-extrabold text-on-surface tracking-tight mb-2">Connect</h1>
-        <p className="text-on-surface-variant text-lg">Welcome back to TrustMarket</p>
+        <h1 className="text-4xl font-extrabold text-on-surface tracking-tight mb-2">Guild</h1>
+        <p className="text-on-surface-variant text-lg">Welcome back to Guild</p>
       </header>
 
       {/* Login Card */}
@@ -150,7 +150,7 @@ export default function LoginPage() {
           <Link className="text-xs text-on-surface-variant hover:text-primary transition-colors font-medium" href="#">Terms of Service</Link>
           <Link className="text-xs text-on-surface-variant hover:text-primary transition-colors font-medium" href="#">Help Center</Link>
         </div>
-        <p className="mt-6 text-xs text-on-surface-variant/40 font-medium">© 2024 TrustMarket. All rights reserved.</p>
+        <p className="mt-6 text-xs text-on-surface-variant/40 font-medium">© 2024 Guild. All rights reserved.</p>
       </footer>
 
       {/* Aesthetic Decorative Elements */}

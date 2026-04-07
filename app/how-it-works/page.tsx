@@ -22,7 +22,7 @@ export default function HowItWorksPage() {
             Simple. Transparent. <span className="text-primary italic">Human.</span>
           </h1>
           <p className="text-on-surface-variant text-xl max-w-2xl mx-auto leading-relaxed">
-            Connect with skilled professionals or grow your business with a marketplace built on trust and effortless collaboration.
+            Collaborate with skilled professionals or grow your business with a marketplace built on trust and effortless collaboration.
           </p>
         </header>
 

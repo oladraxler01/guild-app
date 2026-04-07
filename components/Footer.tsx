@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="bg-[#faecff] w-full py-12 mt-auto">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8 px-8 max-w-7xl mx-auto">
         <div className="space-y-4">
-          <div className="text-xl font-bold text-[#3a264b]">Connect</div>
+          <div className="text-xl font-bold text-[#3a264b]">Guild</div>
           <p className="text-sm text-[#69537b] leading-relaxed">The premium marketplace for meaningful connections and professional services.</p>
         </div>
         <div>
@@ -33,7 +33,7 @@ export function Footer() {
         </div>
       </div>
       <div className="mt-12 pt-8 border-t border-[#3a264b]/10 max-w-7xl mx-auto px-8 text-center md:text-left">
-        <p className="text-sm text-[#69537b]">&copy; 2024 Connect Marketplace. All rights reserved.</p>
+        <p className="text-sm text-[#69537b]">&copy; 2024 Guild Marketplace. All rights reserved.</p>
       </div>
     </footer>
   );

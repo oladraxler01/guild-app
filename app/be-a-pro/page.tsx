@@ -30,7 +30,7 @@ export default function BeAProPage() {
                 Turn your talent into <span className="text-primary">equity.</span>
               </h1>
               <p className="text-xl text-on-surface-variant max-w-lg leading-relaxed">
-                Connect is the premium marketplace for independent artisans and digital specialists to scale their business with verified leads and automated security.
+                Guild is the premium marketplace for independent artisans and digital specialists to scale their business with verified leads and automated security.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Link href="/auth/sign-up?role=pro" className="bg-gradient-to-br from-primary to-primary-container text-on-primary px-10 py-5 rounded-full font-bold text-lg shadow-xl hover:scale-95 transition-all text-center">
@@ -59,7 +59,7 @@ export default function BeAProPage() {
           {/* Why Join Bento Grid */}
           <section className="max-w-7xl mx-auto px-6 py-20">
             <div className="mb-16 text-center">
-              <h2 className="text-3xl md:text-5xl font-bold mb-4">Why Join Connect</h2>
+              <h2 className="text-3xl md:text-5xl font-bold mb-4">Why Join Guild</h2>
               <p className="text-on-surface-variant">We built the infrastructure so you can focus on the craft.</p>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
@@ -73,7 +73,7 @@ export default function BeAProPage() {
                   <p className="text-on-surface-variant text-lg max-w-md">Never chase an invoice again. Our automated escrow system ensures you get paid the moment the milestone is met.</p>
                 </div>
                 <div className="mt-12 flex items-center text-primary font-bold group-hover:gap-2 transition-all cursor-pointer">
-                  Learn about Connect Pay <span className="material-symbols-outlined">arrow_forward</span>
+                  Learn about Guild Pay <span className="material-symbols-outlined">arrow_forward</span>
                 </div>
               </div>
               {/* Small Card 1 */}
@@ -97,7 +97,7 @@ export default function BeAProPage() {
                 <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Professional office space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwFe8jfgVg9fvpK-swDffzbRzePFfABRDVVY00voXhQP1ht_1RVogkMXWrqTYJ6EgFt0bYTASIs3IjT5ykUGEVBlYcxmXWg_5lx8og5cIISHKse_WFkrzscio0gZBjBUOgcw7KGRi4rJN2eWef9oTHSljfRqB6f33cTW9739wmm8ludiU3QzsGAJgkOqa33u7BSB16VqpgsCk6DSzQGHikTsA98SLQGteJzqG577eqHjSvUNeEJ-JUL4l2TIZRDIPe91Qz7Qhpfs8" />
                 <div className="absolute inset-0 bg-gradient-to-t from-on-surface/80 to-transparent p-10 flex flex-col justify-end">
                   <h3 className="text-2xl font-bold text-white mb-2">Network with the Best</h3>
-                  <p className="text-white/80 max-w-sm">Connect with a global community of elite service providers and collaborate on major enterprise contracts.</p>
+                  <p className="text-white/80 max-w-sm">Partner with a global community of elite service providers and collaborate on major enterprise contracts.</p>
                 </div>
               </div>
             </div>
@@ -150,7 +150,7 @@ export default function BeAProPage() {
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -mr-32 -mt-32"></div>
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/20 rounded-full blur-3xl -ml-32 -mb-32"></div>
               <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 relative z-10">Ready to take the next step?</h2>
-              <p className="text-white/60 text-xl max-w-2xl mx-auto mb-12 relative z-10">Join thousands of pros who have already doubled their business using Connect&apos;s platform.</p>
+              <p className="text-white/60 text-xl max-w-2xl mx-auto mb-12 relative z-10">Join thousands of pros who have already doubled their business using Guild&apos;s platform.</p>
               <div className="flex flex-col sm:flex-row justify-center gap-6 relative z-10">
                 <Link href="/auth/sign-up?role=pro" className="bg-gradient-to-br from-primary to-primary-container text-on-primary px-12 py-5 rounded-full font-bold text-lg shadow-lg hover:scale-105 transition-all text-center">
                   Create Your Pro Profile

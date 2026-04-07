@@ -47,7 +47,7 @@ export default async function FindAProPage() {
             Expert help, just a <span className="text-primary">click away.</span>
           </h1>
           <p className="text-on-surface-variant text-lg max-w-2xl mx-auto mb-10">
-            Connect with the top-rated professionals in your area for any service you need.
+            Discover the top-rated professionals in your area for any service you need.
           </p>
           
           <SearchBar />
@@ -126,7 +126,7 @@ export default async function FindAProPage() {
               No professionals found in your area yet.
             </h2>
             <p className="text-on-surface-variant text-lg max-w-md mb-10 leading-relaxed">
-              Be the first to join the Guild! Sign up as a Pro and start connecting with clients today.
+              Be the first to join the Guild! Sign up as a Pro and start engaging with clients today.
             </p>
             <Link 
               href="/auth/sign-up?role=pro" 

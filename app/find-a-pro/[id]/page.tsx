@@ -76,7 +76,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
         <div className="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
           <div className="text-2xl font-extrabold text-purple-700 tracking-tighter">
             <Link href="/">
-              <span style={{ color: "rgb(58, 38, 75)", letterSpacing: "-0.6px" }}>ConnectFlow</span>
+              <span style={{ color: "rgb(58, 38, 75)", letterSpacing: "-0.6px" }}>Guild</span>
             </Link>
           </div>
           <div className="hidden md:flex items-center gap-8">
@@ -295,7 +295,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
        {/* Footer */}
        <footer className="w-full mt-12 py-8 px-6 border-t border-slate-100 bg-white">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-lg font-bold text-on-surface mb-2 tracking-tight">ConnectFlow</div>
+          <div className="text-lg font-bold text-on-surface mb-2 tracking-tight">Guild</div>
           <div className="flex flex-wrap items-center justify-center gap-8">
             <span className="text-xs font-semibold text-slate-400 hover:text-primary cursor-pointer transition-colors">Privacy Policy</span>
             <span className="text-xs font-semibold text-slate-400 hover:text-primary cursor-pointer transition-colors">Terms of Service</span>
@@ -303,7 +303,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
             <span className="text-xs font-semibold text-slate-400 hover:text-primary cursor-pointer transition-colors">Contact Us</span>
           </div>
           <p className="text-xs font-medium text-slate-400">
-            © 2024 ConnectFlow. Human-centric connections.
+            © 2024 Guild. Human-centric connections.
           </p>
         </div>
       </footer>
