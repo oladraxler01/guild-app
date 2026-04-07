@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import ChatInput from "./components/ChatInput";
 import ChatAutoRefresh from "./components/ChatAutoRefresh";
+import { PayNowButton, MarkCompleteButton, ReleaseFundsButton } from "@/components/PaymentButtons";
 
 interface PageProps {
   params: Promise<{ jobId: string }>;
@@ -60,8 +61,10 @@ export default async function ChatPage({ params }: PageProps) {
     .order("created_at", { ascending: true });
 
   const isPro = user.id === job.pro_id;
+  const isClient = user.id === job.client_id;
   const otherParty = isPro ? job.client : job.pro;
   const otherPartyFirstName = otherParty?.first_name || "Unknown";
+  const paymentStatus = job.payment_status || "unpaid";
 
   return (
     <div className="bg-[#fef3ff] text-[#3a264b] antialiased min-h-screen font-['Plus_Jakarta_Sans']">
@@ -89,12 +92,21 @@ export default async function ChatPage({ params }: PageProps) {
 
       <main className="pt-24 pb-12 px-4 md:px-6 max-w-7xl mx-auto h-[calc(100vh-2rem)] flex gap-6 overflow-hidden">
         
-        {/* Left Sidebar: Job Details */}
+        {/* Left Sidebar: Job Details + Payment */}
         <aside className="hidden lg:flex flex-col w-80 shrink-0 gap-6 h-full overflow-y-auto hide-scrollbar">
           <div className="bg-white p-6 rounded-lg space-y-4 shadow-sm">
             <div className="flex items-center justify-between">
-              <span className="px-3 py-1 bg-[#e6c5ff] text-[#612c90] text-xs font-semibold rounded-full tracking-wide uppercase">
-                {job.status}
+              <span className={`px-3 py-1 text-xs font-semibold rounded-full tracking-wide uppercase ${
+                paymentStatus === "funded" || paymentStatus === "awaiting_release"
+                  ? "bg-green-100 text-green-700"
+                  : paymentStatus === "released"
+                    ? "bg-blue-100 text-blue-700"
+                    : "bg-[#e6c5ff] text-[#612c90]"
+              }`}>
+                {paymentStatus === "funded" ? "💰 Funded"
+                  : paymentStatus === "awaiting_release" ? "⏳ Awaiting Release"
+                  : paymentStatus === "released" ? "✅ Completed"
+                  : job.status}
               </span>
               {job.budget !== null && (
                 <span className="text-[#702ae1] font-bold text-lg">${job.budget}</span>
@@ -108,9 +120,18 @@ export default async function ChatPage({ params }: PageProps) {
               <p className="text-sm text-[#69537b]">{job.description || "No description provided."}</p>
             </div>
           </div>
-          <div className="p-4 flex items-center gap-3 text-[#69537b]/70 hover:text-[#702ae1] transition-colors cursor-pointer group">
-            <span className="material-symbols-outlined group-hover:fill-current">help</span>
-            <span className="text-sm font-medium">Need help with this job?</span>
+
+          {/* Payment Actions */}
+          <div className="space-y-3">
+            {isClient && paymentStatus === "unpaid" && job.budget && (
+              <PayNowButton jobId={jobId} />
+            )}
+            {isPro && paymentStatus === "funded" && (
+              <MarkCompleteButton jobId={jobId} />
+            )}
+            {isClient && paymentStatus === "awaiting_release" && (
+              <ReleaseFundsButton jobId={jobId} />
+            )}
           </div>
         </aside>
 

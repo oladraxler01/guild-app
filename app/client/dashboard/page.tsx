@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { signOutAction } from "@/app/auth/actions";
+import { ReleaseFundsButton } from "@/components/PaymentButtons";
 
 export default async function ClientDashboard() {
   const supabase = await createClient();
@@ -159,9 +160,17 @@ export default async function ClientDashboard() {
                         <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${
                           isPending
                             ? "text-[#9e3657] bg-[#ff8eac]/15"
-                            : "text-[#702ae1] bg-[#702ae1]/10"
+                            : job.payment_status === "funded" || job.payment_status === "awaiting_release"
+                              ? "text-green-700 bg-green-100"
+                              : job.payment_status === "released"
+                                ? "text-blue-700 bg-blue-100"
+                                : "text-[#702ae1] bg-[#702ae1]/10"
                         }`}>
-                          {isPending ? "Pending" : "In Progress"}
+                          {isPending ? "Pending" 
+                            : job.payment_status === "funded" ? "💰 Funded"
+                            : job.payment_status === "awaiting_release" ? "⏳ Awaiting Release"
+                            : job.payment_status === "released" ? "✅ Completed"
+                            : "In Progress"}
                         </span>
                       </div>
 
@@ -176,19 +185,24 @@ export default async function ClientDashboard() {
                     </div>
 
                     {/* Action */}
-                    <div className="mt-5 pt-4 border-t border-[#f5e2ff]">
+                    <div className="mt-5 pt-4 border-t border-[#f5e2ff] space-y-2">
                       {isPending ? (
                         <p className="text-xs text-[#69537b] italic">
                           Submitted {new Date(job.created_at).toLocaleDateString()}
                         </p>
                       ) : (
-                        <Link
-                          href={`/messages/${job.id}`}
-                          className="w-full py-2.5 bg-[#702ae1] text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-[#6411d5] active:scale-95 transition-all"
-                        >
-                          <span className="material-symbols-outlined text-sm">chat</span>
-                          Message Pro
-                        </Link>
+                        <>
+                          {job.payment_status === "awaiting_release" && (
+                            <ReleaseFundsButton jobId={job.id} />
+                          )}
+                          <Link
+                            href={`/messages/${job.id}`}
+                            className="w-full py-2.5 bg-[#702ae1] text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-[#6411d5] active:scale-95 transition-all"
+                          >
+                            <span className="material-symbols-outlined text-sm">chat</span>
+                            Message Pro
+                          </Link>
+                        </>
                       )}
                     </div>
                   </div>

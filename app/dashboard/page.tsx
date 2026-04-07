@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { handleJobAction } from "./actions";
+import { MarkCompleteButton } from "@/components/PaymentButtons";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -146,13 +147,22 @@ export default async function DashboardPage() {
                         <h3 className="text-lg font-bold text-on-surface group-hover:text-primary transition-colors leading-tight">
                           {job.title}
                         </h3>
+                        {(job.payment_status === "funded" || job.payment_status === "awaiting_release") && (
+                          <span className="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded-full uppercase">💰 Funded</span>
+                        )}
+                        {job.payment_status === "released" && (
+                          <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-full uppercase">✅ Completed</span>
+                        )}
                       </div>
                       <p className="text-sm font-medium text-primary">
                         Client: {client?.first_name || "Unknown"} {client?.last_name || ""}
                       </p>
                     </div>
-                    <div className="flex items-center gap-4 shrink-0 mt-3 md:mt-0">
+                    <div className="flex items-center gap-3 shrink-0 mt-3 md:mt-0">
                       {job.budget && <span className="text-primary font-extrabold text-lg">${job.budget}</span>}
+                      {job.payment_status === "funded" && (
+                        <MarkCompleteButton jobId={job.id} />
+                      )}
                       <Link href={`/messages/${job.id}`}>
                         <button className="px-6 py-2.5 bg-white border-2 border-primary text-primary text-sm font-bold rounded-xl active:scale-95 transition-all shadow-sm hover:bg-primary/5">
                           Continue Chat
