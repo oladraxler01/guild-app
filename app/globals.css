@@ -6,6 +6,18 @@
   body { 
     font-family: var(--font-plus-jakarta), sans-serif; 
   }
+
+  /* Dark mode global overrides for the deep navy theme */
+  .dark {
+    --tw-bg-opacity: 1;
+    color-scheme: dark;
+  }
+
+  .dark body,
+  .dark {
+    background-color: #0B1B3D;
+    color: #E2E8F0;
+  }
 }
 
 @layer components {
@@ -14,5 +26,175 @@
   }
   .bg-gradient-primary { 
     background: linear-gradient(135deg, #702ae1 0%, #b28cff 100%); 
+  }
+
+  /* ========== DARK MODE COMPONENT OVERRIDES ========== */
+
+  /* Surfaces & Containers */
+  .dark .bg-\[\#fef3ff\],
+  .dark .bg-surface,
+  .dark .bg-surface-bright,
+  .dark .bg-background {
+    background-color: #0B1B3D !important;
+  }
+
+  .dark .bg-\[\#faecff\],
+  .dark .bg-surface-container-low {
+    background-color: #0F2147 !important;
+  }
+
+  .dark .bg-surface-container,
+  .dark .bg-\[\#f5e2ff\] {
+    background-color: #122752 !important;
+  }
+
+  .dark .bg-surface-container-high,
+  .dark .bg-\[\#f1daff\],
+  .dark .bg-\[\#edd3ff\] {
+    background-color: #152D5C !important;
+  }
+
+  .dark .bg-surface-container-highest {
+    background-color: #1A3366 !important;
+  }
+
+  .dark .bg-surface-container-lowest,
+  .dark .bg-white,
+  .dark .bg-\[\#ffffff\] {
+    background-color: #0D1F42 !important;
+  }
+
+  /* Glass / backdrop navs */
+  .dark .bg-\[\#ffffff\]\/70 {
+    background-color: rgba(11, 27, 61, 0.85) !important;
+  }
+
+  .dark .bg-white\/70,
+  .dark .bg-white\/80 {
+    background-color: rgba(11, 27, 61, 0.85) !important;
+  }
+
+  /* Text Colors */
+  .dark .text-\[\#3a264b\],
+  .dark .text-on-surface,
+  .dark .text-on-background {
+    color: #E2E8F0 !important;
+  }
+
+  .dark .text-\[\#69537b\],
+  .dark .text-on-surface-variant {
+    color: #94A3B8 !important;
+  }
+
+  .dark .text-\[\#702ae1\],
+  .dark .text-primary {
+    color: #A78BFA !important;
+  }
+
+  .dark .text-\[\#7742a6\] {
+    color: #C4B5FD !important;
+  }
+
+  .dark .text-\[\#612c90\],
+  .dark .text-on-secondary-container {
+    color: #C4B5FD !important;
+  }
+
+  /* Borders */
+  .dark .border-\[\#edd3ff\],
+  .dark .border-\[\#edd3ff\]\/30,
+  .dark .border-\[\#edd3ff\]\/50,
+  .dark .border-outline-variant,
+  .dark .border-slate-100 {
+    border-color: #1E3A5F !important;
+  }
+
+  .dark .border-primary-container {
+    border-color: #4C1D95 !important;
+  }
+
+  /* Cards with hover */
+  .dark .hover\:bg-\[\#fef3ff\]:hover,
+  .dark .hover\:bg-\[\#faecff\]:hover {
+    background-color: #152D5C !important;
+  }
+
+  .dark .hover\:bg-\[\#edd3ff\]\/50:hover {
+    background-color: rgba(30, 58, 95, 0.5) !important;
+  }
+
+  /* Shadow adjustments */
+  .dark .shadow-sm,
+  .dark .shadow-lg,
+  .dark .shadow-xl {
+    --tw-shadow-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .dark .shadow-\[0px_0px_32px_rgba\(58\,38\,75\,0\.06\)\] {
+    box-shadow: 0px 0px 32px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* Specific background overrides for job cards etc */
+  .dark .bg-\[\#faecff\]\/30 {
+    background-color: rgba(15, 33, 71, 0.5) !important;
+  }
+
+  .dark .bg-\[\#faecff\]\/50,
+  .dark .hover\:bg-\[\#faecff\]\/50:hover {
+    background-color: rgba(15, 33, 71, 0.7) !important;
+  }
+
+  .dark .bg-\[\#ff8eac\]\/20,
+  .dark .bg-\[\#ff8eac\]\/15 {
+    background-color: rgba(255, 142, 172, 0.1) !important;
+  }
+
+  .dark .bg-\[\#e6c5ff\] {
+    background-color: #2D1B69 !important;
+  }
+
+  .dark .bg-\[\#702ae1\]\/10 {
+    background-color: rgba(112, 42, 225, 0.2) !important;
+  }
+
+  /* Purple gradient buttons keep their gradient */
+  .dark .bg-gradient-to-br.from-\[\#702ae1\].to-\[\#b28cff\] {
+    background: linear-gradient(135deg, #7C3AED 0%, #A78BFA 100%) !important;
+  }
+
+  /* Dashed borders */
+  .dark .border-dashed {
+    border-color: #1E3A5F !important;
+  }
+
+  /* Footer */
+  .dark .bg-slate-50 {
+    background-color: #091531 !important;
+  }
+
+  /* Purple bg elements keep purple tones */
+  .dark .bg-primary\/5 {
+    background-color: rgba(112, 42, 225, 0.1) !important;
+  }
+
+  .dark .bg-primary\/10 {
+    background-color: rgba(112, 42, 225, 0.15) !important;
+  }
+
+  /* Green indicators */
+  .dark .bg-green-100 {
+    background-color: rgba(34, 197, 94, 0.15) !important;
+    color: #4ADE80 !important;
+  }
+  .dark .text-green-700 {
+    color: #4ADE80 !important;
+  }
+
+  /* Yellow indicators */
+  .dark .bg-yellow-100 {
+    background-color: rgba(234, 179, 8, 0.15) !important;
+  }
+  .dark .text-yellow-700 {
+    color: #FACC15 !important;
   }
 }

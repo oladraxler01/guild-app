@@ -79,7 +79,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         />
 
         {/* Main Canvas */}
-        <main className="flex-1 md:ml-64 p-4 md:p-10 max-w-5xl mx-auto w-full">
+        <main className="flex-1 md:ml-64 p-4 md:p-10 w-full">
           {children}
         </main>
       </div>
