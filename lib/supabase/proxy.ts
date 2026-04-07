@@ -50,7 +50,7 @@ export async function updateSession(request: NextRequest) {
 
   // Update this block in lib/supabase/proxy.ts
 // 1. Create a list of pages that DON'T need a login
-const publicPages = ["/", "/be-a-pro", "/find-a-pro", "/how-it-works", "/auth/login", "/auth/sign-up", "/auth/confirm", "/post-job"];
+const publicPages = ["/", "/be-a-pro", "/find-a-pro", "/how-it-works", "/auth/login", "/auth/sign-up", "/auth/confirm", "/post-job", "/browse-jobs", "/api/test-jobs"];
 
 // 2. Update the check
 if (

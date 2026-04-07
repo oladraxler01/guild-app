@@ -16,6 +16,9 @@ export default async function BrowseJobsPage() {
     .eq("status", "pending")
     .order("created_at", { ascending: false });
 
+  console.log("Browse Jobs Error:", error);
+  console.log("Browse Jobs Data:", rawJobs);
+
   let jobs = rawJobs || [];
 
   // Map Client profiles

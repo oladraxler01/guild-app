@@ -1,6 +1,7 @@
-import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import Link from "next/link";
+import { ClientPostJobForm } from "./ClientPostJobForm";
 
 export default function PostJobPage() {
   return (
@@ -61,20 +62,7 @@ export default function PostJobPage() {
                 </div>
                 <h2 className="text-2xl font-bold text-on-surface">I&apos;m a Client</h2>
               </div>
-              <div className="space-y-6 flex-grow flex flex-col">
-                <div className="space-y-2 flex-grow flex flex-col">
-                  <label className="block text-sm font-semibold text-on-surface ml-1">Describe what you need</label>
-                  <textarea className="w-full h-full min-h-[200px] bg-surface-container-lowest border-outline-variant/15 border rounded-lg p-4 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant/50 resize-none" placeholder="e.g. I need someone to help me fix a leaky faucet in my kitchen this weekend..." aria-label="Job Description"></textarea>
-                </div>
-                <div className="p-6 bg-surface-container-low rounded-lg flex items-start gap-4">
-                  <span className="material-symbols-outlined text-secondary">info</span>
-                  <p className="text-sm text-on-surface-variant leading-relaxed">Pros in your area will see this request and message you directly. Keep it brief but clear!</p>
-                </div>
-              </div>
-              <Link href="/auth/sign-up?role=client" className="w-full py-5 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold text-lg shadow-xl shadow-primary/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-auto">
-                Post a Job
-                <span className="material-symbols-outlined">send</span>
-              </Link>
+              <ClientPostJobForm />
             </section>
           </div>
 
