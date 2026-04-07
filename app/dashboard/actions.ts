@@ -70,6 +70,8 @@ export async function updateProfileAction(formData: FormData) {
   }
 
   revalidatePath("/dashboard");
+  revalidatePath("/dashboard/profile");
+  revalidatePath("/find-a-pro");
   return { success: true };
 }
 
