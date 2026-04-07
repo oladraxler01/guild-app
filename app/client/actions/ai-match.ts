@@ -29,19 +29,26 @@ export async function parseJobAndMatch(rawDescription: string) {
 
     const result = await model.generateContent(prompt);
     const responseText = result.response.text();
+    console.log("Gemini Raw Response:", responseText);
     
-    // Clean JSON (in case AI adds markdown blocks)
-    const jsonString = responseText.replace(/```json/g, "").replace(/```/g, "").trim();
-    const parsedData = JSON.parse(jsonString);
+    // Robust JSON extraction
+    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error("AI did not return valid JSON results.");
+    
+    const parsedData = JSON.parse(jsonMatch[0]);
 
     // 2. Fetch Matching Pros
-    // Primary match on category or skills matching professional_title or bio tags
-    // We prioritize is_premium and then experience_years
+    // Match on: Category OR any of the 3 Skills
+    const skillFilters = parsedData.skills.map((s: string) => `professional_title.ilike.%${s}%,bio.ilike.%${s}%`).join(",");
+    const matchQuery = `professional_title.ilike.%${parsedData.category}%,bio.ilike.%${parsedData.category}%,${skillFilters}`;
+    
+    console.log("Match Query:", matchQuery);
+
     const { data: pros, error: matchError } = await supabase
       .from("profiles")
       .select("id, first_name, last_name, avatar_url, professional_title, bio, is_premium, experience_years")
       .eq("role", "pro")
-      .or(`professional_title.ilike.%${parsedData.category}%,bio.ilike.%${parsedData.category}%`)
+      .or(matchQuery)
       .order("is_premium", { ascending: false })
       .order("experience_years", { ascending: false })
       .limit(3);
