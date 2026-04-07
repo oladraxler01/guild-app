@@ -4,6 +4,8 @@ import Link from "next/link";
 import { handleJobAction } from "./actions";
 import { MarkCompleteButton } from "@/components/PaymentButtons";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   const supabase = await createClient();
 

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { signOutAction } from "@/app/auth/actions";
 import { ReleaseFundsButton } from "@/components/PaymentButtons";
 
+export const dynamic = "force-dynamic";
+
 export default async function ClientDashboard() {
   const supabase = await createClient();
 
@@ -25,12 +27,30 @@ export default async function ClientDashboard() {
 
   const firstName = profile?.first_name || user.user_metadata?.first_name || "there";
 
-  // Fetch job requests with Pro details
+  // Fetch job requests
   const { data: jobRequests } = await supabase
     .from("job_requests")
-    .select(`*, pro:profiles!pro_id (first_name, last_name, avatar_url)`)
+    .select(`*`)
     .eq("client_id", user.id)
     .order("created_at", { ascending: false });
+
+  // Map Pro profiles manually to avoid relation errors
+  if (jobRequests && jobRequests.length > 0) {
+    const proIds = jobRequests.map(j => j.pro_id).filter(Boolean);
+    if (proIds.length > 0) {
+      const { data: proProfiles } = await supabase
+        .from("profiles")
+        .select("id, first_name, last_name, avatar_url")
+        .in("id", proIds);
+      
+      const proMap: Record<string, any> = {};
+      proProfiles?.forEach(p => proMap[p.id] = p);
+      
+      jobRequests.forEach(j => {
+        if (j.pro_id) j.pro = proMap[j.pro_id];
+      });
+    }
+  }
 
   const activeJobs = jobRequests?.filter(j => j.status === 'active' || j.status === 'pending') || [];
   const completedJobs = jobRequests?.filter(j => j.status === 'completed') || [];
