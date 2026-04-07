@@ -18,16 +18,6 @@ export default function PostJobPage() {
       <div className="absolute bottom-20 right-[-10%] w-[50%] h-[50%] bg-[#edd3ff]/30 rounded-full blur-[150px] -z-0 pointer-events-none"></div>
 
       <Footer />
-
-      <style jsx global>{`
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 8s linear infinite;
-        }
-      `}</style>
     </main>
   );
 }
