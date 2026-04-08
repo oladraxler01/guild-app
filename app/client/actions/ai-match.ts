@@ -3,14 +3,20 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { createClient } from "@/lib/supabase/server";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
 export async function parseJobAndMatch(rawDescription: string) {
   try {
     const supabase = await createClient();
+    
+    // 1. Check API Key
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error("GEMINI_API_KEY is missing from environment. You MUST restart your terminal (npm run dev) after adding it to .env.local.");
+    }
 
-    // 1. AI Intent Parsing
+    // 2. AI Intent Parsing
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
     const prompt = `
       You are an expert project appraiser for a high-end service marketplace called Guild.
       Analyze the following job description and extract key metrics.
@@ -35,18 +41,17 @@ export async function parseJobAndMatch(rawDescription: string) {
     // Robust JSON extraction
     const jsonMatch = responseText.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
-       console.error("No JSON found in response:", responseText);
-       throw new Error(`AI returned text instead of data: ${responseText.substring(0, 100)}...`);
+       throw new Error(`AI returned text instead of data. Check your description.`);
     }
     
     let parsedData;
     try {
       parsedData = JSON.parse(jsonMatch[0]);
     } catch (e) {
-      throw new Error(`Invalid JSON format from AI: ${jsonMatch[0].substring(0, 50)}...`);
+      throw new Error(`AI returned invalid JSON formatting.`);
     }
 
-    // 2. Fetch Matching Pros
+    // 3. Fetch Matching Pros
     // Match on: Category OR any of the 3 Skills
     const skills = Array.isArray(parsedData.skills) ? parsedData.skills : [];
     const skillFilters = skills.length > 0 
@@ -54,8 +59,6 @@ export async function parseJobAndMatch(rawDescription: string) {
       : "";
       
     const matchQuery = `professional_title.ilike.%${parsedData.category}%,bio.ilike.%${parsedData.category}%${skillFilters}`;
-    
-    console.log("Final Match Query:", matchQuery);
 
     const { data: pros, error: matchError } = await supabase
       .from("profiles")
@@ -75,14 +78,10 @@ export async function parseJobAndMatch(rawDescription: string) {
     };
 
   } catch (error: any) {
-    console.error("AI Match Error Details:", {
-      message: error.message,
-      stack: error.stack,
-      response: error?.response ? await error.response.text() : "No response body"
-    });
+    console.error("AI Match Error Details:", error.message);
     
     let userMessage = error.message;
-    if (error.message.includes("API key")) userMessage = "Invalid Gemini API Key. Check your .env.local";
+    if (error.message.includes("API key")) userMessage = "Invalid Gemini API Key. Check your .env.local and RESTART your server.";
     if (error.message.includes("safety")) userMessage = "Request blocked by AI safety filters. Try rephrasing.";
     
     return {
