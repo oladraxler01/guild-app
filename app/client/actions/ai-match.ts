@@ -29,13 +29,22 @@ export async function parseJobAndMatch(rawDescription: string) {
 
     const result = await model.generateContent(prompt);
     const responseText = result.response.text();
-    console.log("Gemini Raw Response:", responseText);
+    
+    if (!responseText) throw new Error("AI returned an empty response.");
     
     // Robust JSON extraction
     const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error("AI did not return valid JSON results.");
+    if (!jsonMatch) {
+       console.error("No JSON found in response:", responseText);
+       throw new Error(`AI returned text instead of data: ${responseText.substring(0, 100)}...`);
+    }
     
-    const parsedData = JSON.parse(jsonMatch[0]);
+    let parsedData;
+    try {
+      parsedData = JSON.parse(jsonMatch[0]);
+    } catch (e) {
+      throw new Error(`Invalid JSON format from AI: ${jsonMatch[0].substring(0, 50)}...`);
+    }
 
     // 2. Fetch Matching Pros
     // Match on: Category OR any of the 3 Skills
@@ -68,7 +77,7 @@ export async function parseJobAndMatch(rawDescription: string) {
       response: error?.response ? await error.response.text() : "No response body"
     });
     
-    let userMessage = "Failed to parse job description.";
+    let userMessage = error.message;
     if (error.message.includes("API key")) userMessage = "Invalid Gemini API Key. Check your .env.local";
     if (error.message.includes("safety")) userMessage = "Request blocked by AI safety filters. Try rephrasing.";
     
