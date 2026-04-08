@@ -48,10 +48,14 @@ export async function parseJobAndMatch(rawDescription: string) {
 
     // 2. Fetch Matching Pros
     // Match on: Category OR any of the 3 Skills
-    const skillFilters = parsedData.skills.map((s: string) => `professional_title.ilike.%${s}%,bio.ilike.%${s}%`).join(",");
-    const matchQuery = `professional_title.ilike.%${parsedData.category}%,bio.ilike.%${parsedData.category}%,${skillFilters}`;
+    const skills = Array.isArray(parsedData.skills) ? parsedData.skills : [];
+    const skillFilters = skills.length > 0 
+      ? "," + skills.map((s: string) => `professional_title.ilike.%${s}%,bio.ilike.%${s}%`).join(",")
+      : "";
+      
+    const matchQuery = `professional_title.ilike.%${parsedData.category}%,bio.ilike.%${parsedData.category}%${skillFilters}`;
     
-    console.log("Match Query:", matchQuery);
+    console.log("Final Match Query:", matchQuery);
 
     const { data: pros, error: matchError } = await supabase
       .from("profiles")
