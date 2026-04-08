@@ -12,8 +12,8 @@ export async function parseJobAndMatch(rawDescription: string) {
       throw new Error("GEMINI_API_KEY is missing from environment. RESTART YOUR SERVER (Ctrl+C then npm run dev).");
     }
 
-    // 2. Direct REST Call to Gemini (Using stable v1 and gemini-pro for maximum compatibility)
-    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`;
+    // 2. Direct REST Call to Gemini (Using stable v1 and gemini-1.5-flash)
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
     
     const response = await fetch(url, {
       method: "POST",
