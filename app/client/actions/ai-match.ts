@@ -33,9 +33,7 @@ export async function parseJobAndMatch(rawDescription: string) {
             `
           }]
         }],
-        generationConfig: {
-          response_mime_type: "application/json"
-        }
+        generationConfig: {}
       })
     });
 
