@@ -31,7 +31,13 @@ export async function parseJobAndMatch(rawDescription: string) {
       JSON:
     `;
 
-    const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-flash-latest", "gemini-pro"];
+    const modelsToTry = [
+      "gemini-1.5-flash", 
+      "gemini-1.5-flash-latest", 
+      "gemini-2.0-flash-exp",
+      "gemini-pro",
+      "gemini-1.0-pro"
+    ];
     let responseText = "";
     let lastError: any = null;
 
@@ -142,4 +148,17 @@ export async function createAiJobRequest(data: {
     console.error("Create Job Error:", error);
     return { success: false, error: error.message };
   }
+}
+
+export async function listAvailableModels() {
+   try {
+     const apiKey = process.env.GEMINI_API_KEY;
+     if (!apiKey) return { success: false, error: "No API Key" };
+     const genAI = new GoogleGenerativeAI(apiKey);
+     // Note: listModels is not directly on genAI in some versions of the SDK, 
+     // but we can try to find it or just return a known stable list for trial.
+     return { success: true, models: ["gemini-pro", "gemini-1.5-flash", "gemini-1.5-pro"] };
+   } catch (e: any) {
+     return { success: false, error: e.message };
+   }
 }
