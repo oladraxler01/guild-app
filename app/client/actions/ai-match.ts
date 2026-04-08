@@ -13,10 +13,8 @@ export async function parseJobAndMatch(rawDescription: string) {
       throw new Error("GEMINI_API_KEY is missing from environment. You MUST restart your terminal (npm run dev) after adding it to .env.local.");
     }
 
-    // 2. AI Intent Parsing
+    // 2. AI Intent Parsing with Fallbacks
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
     const prompt = `
       You are an expert project appraiser for a high-end service marketplace called Guild.
       Analyze the following job description and extract key metrics.
@@ -33,10 +31,27 @@ export async function parseJobAndMatch(rawDescription: string) {
       JSON:
     `;
 
-    const result = await model.generateContent(prompt);
-    const responseText = result.response.text();
-    
-    if (!responseText) throw new Error("AI returned an empty response.");
+    const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-flash-latest", "gemini-pro"];
+    let responseText = "";
+    let lastError: any = null;
+
+    for (const modelName of modelsToTry) {
+      try {
+        console.log(`Trying Gemini model: ${modelName}`);
+        const model = genAI.getGenerativeModel({ model: modelName });
+        const result = await model.generateContent(prompt);
+        responseText = result.response.text();
+        if (responseText) break;
+      } catch (e: any) {
+        lastError = e;
+        console.warn(`Model ${modelName} failed:`, e.message);
+        continue;
+      }
+    }
+
+    if (!responseText) {
+       throw new Error(lastError?.message || "All AI models failed to respond.");
+    }
     
     // Robust JSON extraction
     const jsonMatch = responseText.match(/\{[\s\S]*\}/);
@@ -78,11 +93,12 @@ export async function parseJobAndMatch(rawDescription: string) {
     };
 
   } catch (error: any) {
-    console.error("AI Match Error Details:", error.message);
+    console.error("AI Match Final Error:", error.message);
     
     let userMessage = error.message;
     if (error.message.includes("API key")) userMessage = "Invalid Gemini API Key. Check your .env.local and RESTART your server.";
     if (error.message.includes("safety")) userMessage = "Request blocked by AI safety filters. Try rephrasing.";
+    if (error.message.includes("404")) userMessage = "AI Model not found in your region. Contact support or try Pro.";
     
     return {
       success: false,
