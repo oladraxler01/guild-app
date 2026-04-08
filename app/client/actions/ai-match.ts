@@ -62,10 +62,19 @@ export async function parseJobAndMatch(rawDescription: string) {
     };
 
   } catch (error: any) {
-    console.error("AI Match Error:", error);
+    console.error("AI Match Error Details:", {
+      message: error.message,
+      stack: error.stack,
+      response: error?.response ? await error.response.text() : "No response body"
+    });
+    
+    let userMessage = "Failed to parse job description.";
+    if (error.message.includes("API key")) userMessage = "Invalid Gemini API Key. Check your .env.local";
+    if (error.message.includes("safety")) userMessage = "Request blocked by AI safety filters. Try rephrasing.";
+    
     return {
       success: false,
-      error: error.message || "Failed to parse job description"
+      error: userMessage
     };
   }
 }

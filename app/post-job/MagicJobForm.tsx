@@ -40,7 +40,7 @@ export function MagicJobForm() {
       setMatchedPros(result.matchedPros as Pro[]);
       setStep("RESULTS");
     } else {
-      alert("AI was unable to parse this perfectly. Try adding more detail!");
+      alert(`AI Error: ${result.error || "Unable to parse request. Try adding more detail!"}`);
       setStep("INPUT");
     }
   }
