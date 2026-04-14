@@ -5,18 +5,26 @@ import { sendMessage } from "../actions";
 
 interface ChatInputProps {
   jobId: string;
+  onOptimisticSend?: (content: string) => void;
 }
 
-export default function ChatInput({ jobId }: ChatInputProps) {
+export default function ChatInput({ jobId, onOptimisticSend }: ChatInputProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = (formData: FormData) => {
+    const content = formData.get("content") as string;
+    if (content && onOptimisticSend) {
+      onOptimisticSend(content);
+    }
+    
     const boundSendMessage = sendMessage.bind(null, formData, jobId);
     startTransition(() => {
       boundSendMessage();
-      formRef.current?.reset();
     });
+    
+    // Reset immediately for optimistic UX
+    formRef.current?.reset();
   };
 
   return (

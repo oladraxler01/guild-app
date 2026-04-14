@@ -1,8 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
-import ChatInput from "./components/ChatInput";
-import ChatAutoRefresh from "./components/ChatAutoRefresh";
+import RealtimeChatUI from "./components/RealtimeChatUI";
 import AiNegotiationCoach from "./components/AiNegotiationCoach";
 import { PayNowButton, MarkCompleteButton, ReleaseFundsButton, SetBudgetButton } from "@/components/PaymentButtons";
 
@@ -93,8 +92,6 @@ export default async function ChatPage({ params }: PageProps) {
           </div>
         </div>
       </nav>
-
-      <ChatAutoRefresh jobId={jobId} />
 
       <main className="pt-[72px] md:pt-24 pb-0 md:pb-12 px-0 md:px-6 max-w-7xl mx-auto h-[100dvh] md:h-[calc(100vh-2rem)] flex gap-6 overflow-hidden w-full">
         
@@ -220,53 +217,12 @@ export default async function ChatPage({ params }: PageProps) {
             />
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 flex flex-col hide-scrollbar bg-[#fef3ff]/30">
-            {messages && messages.length > 0 ? (
-              messages.map((msg) => {
-                const isMine = msg.sender_id === user.id;
-
-                if (isMine) {
-                  return (
-                    <div key={msg.id} className="flex flex-col items-end gap-1 self-end max-w-[85%]">
-                      <div className="bg-[#702ae1] text-white p-4 rounded-xl rounded-br-none text-sm shadow-sm leading-relaxed">
-                        {msg.content}
-                      </div>
-                      <span className="text-[10px] text-[#69537b] mr-1">
-                        {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div key={msg.id} className="flex items-end gap-3 max-w-[85%]">
-                      <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 bg-[#f5e2ff] flex items-center justify-center font-bold text-xs">
-                        {otherParty?.avatar_url ? (
-                          <img src={otherParty.avatar_url} alt="Profile" className="w-full h-full object-cover" />
-                        ) : (
-                          otherPartyFirstName.charAt(0)
-                        )}
-                      </div>
-                      <div className="space-y-1">
-                        <div className="bg-[#edd3ff] p-4 rounded-xl rounded-bl-none text-[#3a264b] text-sm leading-relaxed">
-                          {msg.content}
-                        </div>
-                        <span className="text-[10px] text-[#69537b] ml-1">
-                          {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                }
-              })
-            ) : (
-              <div className="flex-1 flex flex-col items-center justify-center opacity-50">
-                <span className="material-symbols-outlined text-4xl mb-2">forum</span>
-                <p className="text-sm">Say hello to get the conversation started!</p>
-              </div>
-            )}
-          </div>
-
-          <ChatInput jobId={jobId} />
+          <RealtimeChatUI 
+            initialMessages={messages || []} 
+            jobId={jobId} 
+            currentUserId={user.id} 
+            otherParty={otherParty} 
+          />
 
         </section>
 
