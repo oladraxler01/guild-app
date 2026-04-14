@@ -177,7 +177,11 @@ export default async function ChatPage({ params }: PageProps) {
                 <span className="material-symbols-outlined text-lg">
                   {paymentStatus === "released" ? "check_circle" : "info"}
                 </span>
-                {paymentStatus === "released" ? "Job Complete & Paid" : paymentStatus === "funded" ? "Job Funded" : "Waiting on Client to Fund"}
+                {paymentStatus === "released" 
+                  ? "Job Complete & Paid" 
+                  : !job.budget 
+                    ? "No Budget Set for this Job"
+                    : "Waiting on Client to Fund"}
               </div>
             )}
           </div>
