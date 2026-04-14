@@ -8,9 +8,13 @@ export default function ChatAutoRefresh({ jobId }: { jobId: string }) {
   const router = useRouter();
 
   useEffect(() => {
-    const supabase = createClient();
+    // 1. Fallback Polling: Ensure chat updates even if Supabase Realtime is disabled in the database
+    const intervalId = setInterval(() => {
+      router.refresh();
+    }, 3000);
 
-    // Subscribe to new messages linked to this job_id
+    // 2. Instant Sync: WebSocket connection
+    const supabase = createClient();
     const channel = supabase
       .channel('messages-insert')
       .on(
@@ -21,7 +25,7 @@ export default function ChatAutoRefresh({ jobId }: { jobId: string }) {
           table: 'messages',
           filter: `job_id=eq.${jobId}`
         },
-        (payload) => {
+        () => {
           // Instantly refresh exactly when a new message arrives over WebSocket
           router.refresh();
         }
@@ -29,6 +33,7 @@ export default function ChatAutoRefresh({ jobId }: { jobId: string }) {
       .subscribe();
 
     return () => {
+      clearInterval(intervalId);
       supabase.removeChannel(channel);
     };
   }, [router, jobId]);
