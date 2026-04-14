@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createCheckoutSession, markJobComplete, releasePayment } from "@/app/payments/actions";
+import { createCheckoutSession, markJobComplete, releasePayment, setJobBudget } from "@/app/payments/actions";
 
 export function PayNowButton({ jobId }: { jobId: string }) {
   const [loading, setLoading] = useState(false);
@@ -107,5 +107,53 @@ export function ReleaseFundsButton({ jobId }: { jobId: string }) {
       <span className="material-symbols-outlined text-lg">paid</span>
       {loading ? "Releasing..." : "Release Funds"}
     </button>
+  );
+}
+
+export function SetBudgetButton({ jobId }: { jobId: string }) {
+  const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState("");
+
+  async function handleSetBudget(e: React.FormEvent) {
+    e.preventDefault();
+    const val = parseFloat(amount);
+    if (isNaN(val) || val <= 0) {
+      alert("Please enter a valid amount.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await setJobBudget(jobId, val);
+    } catch (err) {
+      const error = err as Error;
+      alert(error.message || "Failed to set budget");
+      setLoading(false);
+    }
+  }
+
+  return (
+    <form onSubmit={handleSetBudget} className="w-full flex gap-2">
+      <div className="relative flex-1">
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#69537b] font-bold">$</span>
+        <input
+          type="number"
+          min="1"
+          step="1"
+          required
+          placeholder="Enter budget"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          disabled={loading}
+          className="w-full pl-8 pr-3 py-3 border border-[#bda3d1]/50 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#702ae1]/30 disabled:opacity-50"
+        />
+      </div>
+      <button
+        type="submit"
+        disabled={loading || !amount}
+        className="px-4 py-3 bg-[#702ae1] text-white rounded-lg text-sm font-bold shadow-sm active:scale-95 transition-all disabled:opacity-50 whitespace-nowrap"
+      >
+        {loading ? "Saving..." : "Set Budget"}
+      </button>
+    </form>
   );
 }

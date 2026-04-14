@@ -4,7 +4,7 @@ import Link from "next/link";
 import ChatInput from "./components/ChatInput";
 import ChatAutoRefresh from "./components/ChatAutoRefresh";
 import AiNegotiationCoach from "./components/AiNegotiationCoach";
-import { PayNowButton, MarkCompleteButton, ReleaseFundsButton } from "@/components/PaymentButtons";
+import { PayNowButton, MarkCompleteButton, ReleaseFundsButton, SetBudgetButton } from "@/components/PaymentButtons";
 
 interface PageProps {
   params: Promise<{ jobId: string }>;
@@ -132,6 +132,9 @@ export default async function ChatPage({ params }: PageProps) {
             {isClient && paymentStatus === "unpaid" && job.budget && (
               <PayNowButton jobId={jobId} />
             )}
+            {isClient && paymentStatus === "unpaid" && !job.budget && (
+              <SetBudgetButton jobId={jobId} />
+            )}
             {isPro && paymentStatus === "funded" && (
               <MarkCompleteButton jobId={jobId} />
             )}
@@ -166,13 +169,16 @@ export default async function ChatPage({ params }: PageProps) {
             {isClient && paymentStatus === "unpaid" && job.budget && (
               <PayNowButton jobId={jobId} />
             )}
+            {isClient && paymentStatus === "unpaid" && !job.budget && (
+              <SetBudgetButton jobId={jobId} />
+            )}
             {isPro && paymentStatus === "funded" && (
               <MarkCompleteButton jobId={jobId} />
             )}
             {isClient && paymentStatus === "awaiting_release" && (
               <ReleaseFundsButton jobId={jobId} />
             )}
-            {((!isClient && paymentStatus === "unpaid") || paymentStatus === "released" || (!job.budget && paymentStatus === "unpaid")) && (
+            {((!isClient && paymentStatus === "unpaid") || paymentStatus === "released") && (
               <div className="w-full flex items-center justify-center gap-2 p-3 bg-white text-[#69537b] rounded-lg text-sm font-bold border border-[#bda3d1]/30">
                 <span className="material-symbols-outlined text-lg">
                   {paymentStatus === "released" ? "check_circle" : "info"}

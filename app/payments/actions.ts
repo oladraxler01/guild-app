@@ -138,3 +138,30 @@ export async function releasePayment(jobId: string) {
   revalidatePath(`/messages/${jobId}`);
   return { success: true };
 }
+
+/**
+ * Client sets a budget for a job that doesn't have one.
+ */
+export async function setJobBudget(jobId: string, amount: number) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Unauthorized");
+
+  const { data: job } = await supabase
+    .from("job_requests")
+    .select("*")
+    .eq("id", jobId)
+    .single();
+
+  if (!job) throw new Error("Job not found.");
+  if (job.client_id !== user.id) throw new Error("Only the client can set the budget.");
+  if (amount <= 0) throw new Error("Budget must be greater than zero.");
+
+  await supabase
+    .from("job_requests")
+    .update({ budget: amount })
+    .eq("id", jobId);
+
+  revalidatePath(`/messages/${jobId}`);
+  return { success: true };
+}
