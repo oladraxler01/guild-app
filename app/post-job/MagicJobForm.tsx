@@ -17,7 +17,8 @@ type Pro = {
   first_name: string;
   last_name: string;
   avatar_url: string;
-  professional_title: string;
+  bio: string | null;
+  services: string[] | null;
   is_premium: boolean;
   experience_years: number;
 };
@@ -169,7 +170,7 @@ export function MagicJobForm() {
                       </div>
                       <div>
                         <p className="font-extrabold text-[#3a264b]">{pro.first_name} {pro.last_name.charAt(0)}.</p>
-                        <p className="text-xs font-semibold text-[#69537b]">{pro.professional_title}</p>
+                         <p className="text-xs font-semibold text-[#69537b]">{pro.services?.[0] ?? pro.bio?.slice(0, 40) ?? "Guild Professional"}</p>
                       </div>
                       <div className="flex items-center gap-1">
                          <span className="material-symbols-outlined text-[14px] text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
@@ -188,7 +189,7 @@ export function MagicJobForm() {
             <div className="pt-6 flex justify-center">
               <button 
                 onClick={handleFinalSubmit}
-                disabled={matchedPros.length === 0 || isSubmitting}
+                disabled={isSubmitting}
                 className="bg-gradient-primary text-on-primary px-12 py-5 rounded-full font-bold text-xl shadow-2xl hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:scale-100 flex items-center gap-3"
               >
                 {isSubmitting ? (
@@ -209,11 +210,11 @@ export function MagicJobForm() {
               <span className="material-symbols-outlined text-4xl text-green-600">check_circle</span>
            </div>
            <div className="text-center space-y-3">
-              <h2 className="text-4xl font-extrabold text-[#3a264b]">Request Dispatched!</h2>
-              <p className="text-[#69537b] text-lg">Your project brief has been sent to the matched professionals.</p>
+              <h2 className="text-4xl font-extrabold text-[#3a264b]">Request Posted!</h2>
+              <p className="text-[#69537b] text-lg">Your job is now live. Professionals can find and bid on it.</p>
            </div>
            <div className="flex gap-4">
-              <Link href="/client/dashboard" className="px-8 py-4 bg-[#3a264b] text-white rounded-full font-bold">Go to Dashboard</Link>
+              <Link href="/browse-jobs" className="px-8 py-4 bg-[#3a264b] text-white rounded-full font-bold">View on Browse Jobs</Link>
               <button onClick={() => setStep("INPUT")} className="px-8 py-4 bg-[#f1daff] text-[#702ae1] rounded-full font-bold">Post Another</button>
            </div>
         </div>

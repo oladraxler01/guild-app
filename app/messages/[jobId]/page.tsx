@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import ChatInput from "./components/ChatInput";
 import ChatAutoRefresh from "./components/ChatAutoRefresh";
+import AiNegotiationCoach from "./components/AiNegotiationCoach";
 import { PayNowButton, MarkCompleteButton, ReleaseFundsButton } from "@/components/PaymentButtons";
 
 interface PageProps {
@@ -177,6 +178,17 @@ export default async function ChatPage({ params }: PageProps) {
             </div>
           </div>
 
+          {/* Mobile AI Coach Panel */}
+          <div className="xl:hidden px-3 py-2 border-b border-[#bda3d1]/20 bg-white/60 shrink-0">
+            <AiNegotiationCoach
+              jobTitle={job.title}
+              jobDescription={job.description || ""}
+              budget={job.budget}
+              urgency={job.urgency}
+              category={job.category}
+            />
+          </div>
+
           <div className="flex-1 overflow-y-auto p-6 space-y-6 flex flex-col hide-scrollbar bg-[#fef3ff]/30 pb-24">
             {messages && messages.length > 0 ? (
               messages.map((msg) => {
@@ -228,7 +240,7 @@ export default async function ChatPage({ params }: PageProps) {
         </section>
 
         {/* Right Sidebar Toolings */}
-        <aside className="hidden xl:flex flex-col w-64 gap-6 shrink-0 h-full overflow-y-auto hide-scrollbar">
+        <aside className="hidden xl:flex flex-col w-80 gap-6 shrink-0 h-full overflow-y-auto hide-scrollbar">
           <div className="bg-[#edd3ff]/40 p-5 rounded-lg border border-[#bda3d1]/20">
             <h3 className="text-xs font-bold text-[#3a264b] tracking-widest uppercase mb-4">Quick Tools</h3>
             <div className="space-y-2">
@@ -254,6 +266,15 @@ export default async function ChatPage({ params }: PageProps) {
               <span className="text-[10px] font-bold text-green-700">ESCROW PROTECTED</span>
             </div>
           </div>
+
+          {/* AI Negotiation Coach */}
+          <AiNegotiationCoach
+            jobTitle={job.title}
+            jobDescription={job.description || ""}
+            budget={job.budget}
+            urgency={job.urgency}
+            category={job.category}
+          />
         </aside>
 
       </main>
