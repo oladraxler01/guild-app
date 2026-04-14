@@ -161,6 +161,27 @@ export default async function ChatPage({ params }: PageProps) {
             </div>
           </header>
 
+          {/* Mobile Payment Actions Banner */}
+          <div className="xl:hidden p-3 border-b border-[#bda3d1]/30 bg-[#fef3ff] shrink-0">
+            {isClient && paymentStatus === "unpaid" && job.budget && (
+              <PayNowButton jobId={jobId} />
+            )}
+            {isPro && paymentStatus === "funded" && (
+              <MarkCompleteButton jobId={jobId} />
+            )}
+            {isClient && paymentStatus === "awaiting_release" && (
+              <ReleaseFundsButton jobId={jobId} />
+            )}
+            {((!isClient && paymentStatus === "unpaid") || paymentStatus === "released" || (!job.budget && paymentStatus === "unpaid")) && (
+              <div className="w-full flex items-center justify-center gap-2 p-3 bg-white text-[#69537b] rounded-lg text-sm font-bold border border-[#bda3d1]/30">
+                <span className="material-symbols-outlined text-lg">
+                  {paymentStatus === "released" ? "check_circle" : "info"}
+                </span>
+                {paymentStatus === "released" ? "Job Complete & Paid" : paymentStatus === "funded" ? "Job Funded" : "Waiting on Client to Fund"}
+              </div>
+            )}
+          </div>
+
           {/* Mobile Quick Actions Bar */}
           <div className="flex xl:hidden gap-3 p-3 border-b border-[#bda3d1]/20 overflow-x-auto hide-scrollbar shrink-0 bg-[#faecff]/50">
             <button className="flex items-center gap-2 px-4 py-2 bg-white text-[#702ae1] rounded-full text-xs font-bold whitespace-nowrap shadow-sm border border-[#bda3d1]/20">
