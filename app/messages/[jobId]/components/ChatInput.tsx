@@ -20,7 +20,7 @@ export default function ChatInput({ jobId }: ChatInputProps) {
   };
 
   return (
-    <footer className="absolute bottom-0 w-full p-4 bg-white border-t border-[#bda3d1]/30">
+    <footer className="w-full shrink-0 p-4 border-t border-[#bda3d1]/30 bg-white" style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom))' }}>
       <form ref={formRef} action={handleSubmit} className="flex items-center gap-3 bg-[#faecff] p-2 rounded-full border border-[#bda3d1]/30">
         <button type="button" className="p-2 hover:bg-[#f5e2ff] rounded-full text-[#69537b] transition-colors flex items-center justify-center">
           <span className="material-symbols-outlined">add</span>

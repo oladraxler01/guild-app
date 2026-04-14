@@ -94,9 +94,9 @@ export default async function ChatPage({ params }: PageProps) {
         </div>
       </nav>
 
-      <ChatAutoRefresh />
+      <ChatAutoRefresh jobId={jobId} />
 
-      <main className="pt-24 pb-12 px-4 md:px-6 max-w-7xl mx-auto h-[calc(100vh-2rem)] flex gap-6 overflow-hidden">
+      <main className="pt-[72px] md:pt-24 pb-0 md:pb-12 px-0 md:px-6 max-w-7xl mx-auto h-[100dvh] md:h-[calc(100vh-2rem)] flex gap-6 overflow-hidden w-full">
         
         {/* Left Sidebar: Job Details + Payment */}
         <aside className="hidden lg:flex flex-col w-80 shrink-0 gap-6 h-full overflow-y-auto hide-scrollbar">
@@ -142,7 +142,7 @@ export default async function ChatPage({ params }: PageProps) {
         </aside>
 
         {/* Main Chat Window */}
-        <section className="flex-1 flex flex-col bg-white rounded-lg overflow-hidden border border-[#bda3d1]/30 relative">
+        <section className="flex-1 flex flex-col bg-white overflow-hidden border-[#bda3d1]/30 relative border-y-0 border-x-0 rounded-none md:rounded-lg md:border">
           
           <header className="px-6 py-4 flex items-center justify-between border-b border-[#bda3d1]/30">
             <div className="flex items-center gap-4">
@@ -189,7 +189,7 @@ export default async function ChatPage({ params }: PageProps) {
             />
           </div>
 
-          <div className="flex-1 overflow-y-auto p-6 space-y-6 flex flex-col hide-scrollbar bg-[#fef3ff]/30 pb-24">
+          <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 flex flex-col hide-scrollbar bg-[#fef3ff]/30">
             {messages && messages.length > 0 ? (
               messages.map((msg) => {
                 const isMine = msg.sender_id === user.id;

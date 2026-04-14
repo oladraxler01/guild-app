@@ -1,20 +1,37 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
-export default function ChatAutoRefresh() {
+export default function ChatAutoRefresh({ jobId }: { jobId: string }) {
   const router = useRouter();
 
   useEffect(() => {
-    // Silently refresh the Server Component data every 3 seconds
-    // This allows incoming messages to instantly populate without refreshing the page!
-    const intervalId = setInterval(() => {
-      router.refresh();
-    }, 3000);
+    const supabase = createClient();
 
-    return () => clearInterval(intervalId);
-  }, [router]);
+    // Subscribe to new messages linked to this job_id
+    const channel = supabase
+      .channel('messages-insert')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
+          filter: `job_id=eq.${jobId}`
+        },
+        (payload) => {
+          // Instantly refresh exactly when a new message arrives over WebSocket
+          router.refresh();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [router, jobId]);
 
   return null;
 }
