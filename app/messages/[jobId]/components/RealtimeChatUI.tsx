@@ -39,6 +39,21 @@ export default function RealtimeChatUI({
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Sync prop changes from Server Actions (e.g. revalidatePath) so we don't depend entirely on Realtime
+  useEffect(() => {
+    setMessages(prev => {
+      // Keep any temp messages that are currently in flight
+      const pending = prev.filter(m => m.id.startsWith("temp-"));
+      
+      // Remove any pending messages that now match the latest server fetched initialMessages
+      const remainingPending = pending.filter(p => 
+        !initialMessages.some(im => im.content === p.content && im.sender_id === p.sender_id)
+      );
+
+      return [...initialMessages, ...remainingPending];
+    });
+  }, [initialMessages]);
+
   // Supabase Realtime Subscription
   useEffect(() => {
     const supabase = createClient();
@@ -56,13 +71,15 @@ export default function RealtimeChatUI({
           const newMessage = payload.new as Message;
           
           setMessages((prev) => {
-            // Prevent duplicates caused by optimistic updates combining with the real realtime event
+            // Prevent exact duplicates
             if (prev.some(m => m.id === newMessage.id)) return prev;
             
-            // Wait, optimistic messages have a temp ID that won't match. We can check by content & sender just in case?
-            // Actually, best to just filter out temporary optimistic messages if we want, or let React rerender.
-            // A simple implementation pushes the new message and filters out optimistics.
-            return [...prev.filter(m => !m.id.startsWith("temp-")), newMessage];
+            // Remove ONLY the optimistic messages that match the incoming message's content
+            const withoutMatchedOptimistic = prev.filter(m => 
+              !(m.id.startsWith("temp-") && m.content === newMessage.content && m.sender_id === newMessage.sender_id)
+            );
+            
+            return [...withoutMatchedOptimistic, newMessage];
           });
         }
       )
